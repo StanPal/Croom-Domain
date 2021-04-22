@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/MyStuff/Scenes/Character.unity
     guid: a369d0569b7783f49b87ebe6b8d52847
+  - enabled: 1
+    path: Assets/MyStuff/Scenes/NetworkConnect.unity
+    guid: 6f76b5587ce22b448a07252c9929a578
   m_configObjects: {}

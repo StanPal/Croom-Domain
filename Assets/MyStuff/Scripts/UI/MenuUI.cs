@@ -14,7 +14,7 @@ public class MenuUI : MonoBehaviour
 
     public void GoToCoOpMode()
     {
-        SceneManager.LoadScene("CoOpMode");
+        SceneManager.LoadScene("NetworkConnect");
     }
 
     public void GoToCharacter()
