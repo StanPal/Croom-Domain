@@ -6,7 +6,7 @@ using UnityEngine;
 public class ChangeColor : MonoBehaviourPun
 {
     private bool _toggleColor = false;
-    
+
     // Start is called before the first frame update
     //void Start()
     //{
@@ -26,38 +26,46 @@ public class ChangeColor : MonoBehaviourPun
     //    }
     //}
 
+    private void Start()
+    {
+
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if(photonView.IsMine == false && PhotonNetwork.IsConnected == true)
+        if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
         {
             return;
         }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Toggle();
-        }
-
-        if (_toggleColor)
-        {
-            this.GetComponent<MeshRenderer>().material.color = Color.black;
-        }
         else
         {
-            this.GetComponent<MeshRenderer>().material.color = Color.white;
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                if(_toggleColor)
+                {
+                    _toggleColor = false; 
+                }
+                else
+                {
+                    _toggleColor = true;
+                }
+                this.photonView.RPC("ToggleColor", RpcTarget.All, _toggleColor);
+            } 
         }
+
     }
 
-    private void Toggle()
+    [PunRPC]
+    private void ToggleColor(bool Toggle)
     {
-        if (_toggleColor)
+        if (Toggle)
         {
-            _toggleColor = false;
+            this.GetComponent<MeshRenderer>().material.color = Color.red;
         }
         else
         {
-            _toggleColor = true;
+            this.GetComponent<MeshRenderer>().material.color = Color.blue;
         }
-
     }
 }
