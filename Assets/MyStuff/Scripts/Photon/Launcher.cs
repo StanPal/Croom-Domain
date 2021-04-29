@@ -1,7 +1,5 @@
 using Photon.Pun;
 using Photon.Realtime;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Launcher : MonoBehaviourPunCallbacks
@@ -14,13 +12,12 @@ public class Launcher : MonoBehaviourPunCallbacks
     private void Awake()
     {
         // this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
-        PhotonNetwork.AutomaticallySyncScene = true; 
+        PhotonNetwork.AutomaticallySyncScene = true;
     }
     
     void Start()
     {
         Debug.Log("Connecting to server...");
-        
         _progressLabel.SetActive(false);
         _controlPanel.SetActive(true);
     }
@@ -38,14 +35,12 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnDisconnected(DisconnectCause cause)
     {
         _isConnecting = false; 
-        //_progressLabel.SetActive(false);
-        //_controlPanel.SetActive(true);
         Debug.Log("Disconnected from server: " + cause.ToString());
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        Debug.Log("PUN Basics Tutorial/Launcher:OnJoinRandomFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom");
+        Debug.Log("Launcher:OnJoinRandomFailed() was called by PUN. No random room available, so we create one. Calling: PhotonNetwork.CreateRoom");
 
         // we failed to join a random room, maybe none exists or they are all full. Creating a new room.
         PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = _maxPlayerPerRoom });
@@ -58,7 +53,7 @@ public class Launcher : MonoBehaviourPunCallbacks
             Debug.Log("Load Room for 1");
             PhotonNetwork.LoadLevel("Room for 1");
         }
-        Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
+        Debug.Log("Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
     }
 
     public void Connect()
