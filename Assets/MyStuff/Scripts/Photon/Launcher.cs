@@ -38,8 +38,8 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnDisconnected(DisconnectCause cause)
     {
         _isConnecting = false; 
-        _progressLabel.SetActive(false);
-        _controlPanel.SetActive(true);
+        //_progressLabel.SetActive(false);
+        //_controlPanel.SetActive(true);
         Debug.Log("Disconnected from server: " + cause.ToString());
     }
 
@@ -56,7 +56,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         if(PhotonNetwork.CurrentRoom.PlayerCount == 1)
         {
             Debug.Log("Load Room for 1");
-            PhotonNetwork.LoadLevel(1);
+            PhotonNetwork.LoadLevel("Room for 1");
         }
         Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
     }
@@ -67,7 +67,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         _controlPanel.SetActive(false);
 
         //Check if we are connected or not, join if we are else instantiate a connection to the server
-        if(PhotonNetwork.NetworkClientState == ClientState.ConnectedToMasterServer)
+        if(PhotonNetwork.IsConnected)
         {
             PhotonNetwork.JoinRandomRoom();
         }
