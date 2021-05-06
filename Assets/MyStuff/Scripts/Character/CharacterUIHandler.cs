@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-public class CharacterUIHandler : MonoBehaviour
+using Photon.Pun;
+public class CharacterUIHandler : MonoBehaviourPun
 {
     public event System.Action InvokeOnHit;
     private Slider _healthbar;
@@ -29,7 +29,15 @@ public class CharacterUIHandler : MonoBehaviour
 
     public void OnHit()
     {
-        _characterStats.CurrentHealth -= 10f;
+        
+        this.photonView.RPC("TakeDamage", RpcTarget.All, 10f);
+    }
+
+    [PunRPC]
+    private void TakeDamage(float damage)
+    {
+        _characterStats.CurrentHealth -= damage;
         _healthbar.value = _characterStats.CurrentHealth;
+
     }
 }
