@@ -68,8 +68,8 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
         else
         {
-            //Locks users to this specific version, helps block users who have different game versions from interacting with each other. 
             _isConnecting = PhotonNetwork.ConnectUsingSettings();
+            //Locks users to this specific version, helps block users who have different game versions from interacting with each other. 
             PhotonNetwork.GameVersion = "0.0.1";
         }
     }
