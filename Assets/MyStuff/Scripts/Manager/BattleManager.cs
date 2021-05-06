@@ -6,33 +6,36 @@ public enum BattleState { Start, PlayerTurn, EnmeyTurn, Won, Lost}
 
 public class BattleManager : MonoBehaviour
 {
+    public System.Action OnDamage;
+    
+    private SpawnManager _spawnManager;
     public BattleState State;
-    public GameObject playerPrefab;
-    public GameObject enemyPrefab;
+    //public GameObject playerPrefab;
+    //public GameObject enemyPrefab;
 
-    public Transform playerSpawn;
-    public Transform enemySpawn;
+    //public Transform playerSpawn;
+    //public Transform enemySpawn;
 
-    CharacterStats playerStats;
-    CharacterStats enemyStats; 
+    CharacterStats player1;
+    CharacterStats player2;
+
+
+
+    private void Awake()
+    {
+        _spawnManager = FindObjectOfType<SpawnManager>();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
         State = BattleState.Start;
-        SetUpBattle();
-    }
 
-    void SetUpBattle()
-    {
-        GameObject playerOne = Instantiate(playerPrefab, playerSpawn);
-        playerOne.GetComponent<CharacterStats>();
-        Instantiate(enemyPrefab, enemySpawn);
     }
-
-    // Update is called once per frame
-    void Update()
+   
+    public void PlayerDamaged(CharacterStats reciever, CharacterStats sender)
     {
-        
+        reciever.TakeDamage(sender.Attack);
+        OnDamage?.Invoke();
     }
 }
