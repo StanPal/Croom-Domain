@@ -11,6 +11,7 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     [SerializeField] private float _characterAttack = 10;
     [SerializeField] private int _characterID = 0;
 
+    public string PlayerName { get => _characterName; }
     public float MaxHealth { get => _characterMaxHealth; }
     public float CurrentHealth { get => _characterHealth; set => _characterHealth = value; }
     public float Attack { get => _characterAttack; set => _characterAttack = value; }
@@ -21,6 +22,7 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     {
         _spawnManager = FindObjectOfType<SpawnManager>();
         _characterMaxHealth = _characterHealth;
+        _characterName = PlayerPrefs.GetString("PlayerName");
     }
     
 
@@ -37,10 +39,11 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        //Sync Health
+        //Sync Health & name
         if(stream.IsWriting)
         {
             stream.SendNext(CurrentHealth);
+            stream.SendNext(_characterName);
         }
         else
         {
