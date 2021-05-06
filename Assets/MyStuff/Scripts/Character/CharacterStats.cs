@@ -1,33 +1,30 @@
 using Photon.Pun;
 using UnityEngine;
 
-public class CharacterStats : MonoBehaviour, IPunInstantiateMagicCallback
+public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunInstantiateMagicCallback
 {
     private SpawnManager _spawnManager;
 
-    private int _characterMaxHealth;
+    private float _characterMaxHealth;
     [SerializeField] private string _characterName;
-    [SerializeField] private int _characterHealth = 100;
-    [SerializeField] private int _characterAttack = 10;
+    [SerializeField] private float _characterHealth = 100;
+    [SerializeField] private float _characterAttack = 10;
     [SerializeField] private int _characterID = 0;
 
-    public int MaxHealth { get => _characterMaxHealth; }
-    public int CurrentHealth { get => _characterHealth; set => _characterHealth = value; }
-    public int Attack { get => _characterAttack; set => _characterAttack = value; }
+    public float MaxHealth { get => _characterMaxHealth; }
+    public float CurrentHealth { get => _characterHealth; set => _characterHealth = value; }
+    public float Attack { get => _characterAttack; set => _characterAttack = value; }
     public int ID { get => _characterID; }
 
 
     private void Awake()
     {
         _spawnManager = FindObjectOfType<SpawnManager>();
-    }
-
-    public void Start()
-    {
         _characterMaxHealth = _characterHealth;
     }
+    
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         _characterHealth -= damage;
     }
@@ -36,5 +33,19 @@ public class CharacterStats : MonoBehaviour, IPunInstantiateMagicCallback
     {
         _spawnManager.PlayerList.Add(this.gameObject);
         Debug.Log("Adding Instatiated Player to List");
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        //Sync Health
+        if(stream.IsWriting)
+        {
+            stream.SendNext(CurrentHealth);
+        }
+        else
+        {
+            //We are reading input to our health and write it back to our client and synced across the network
+            _characterHealth = (float)stream.ReceiveNext();
+        }        
     }
 }

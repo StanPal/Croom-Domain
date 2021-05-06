@@ -24,15 +24,17 @@ public class BattleUI : MonoBehaviourPun
 
     private void Start()
     {
-        _spawnManager.OnAllPlayersInstantiated += SetUpHealthBars;
-        _battleManager.OnDamage += UpdateHealthBar;
+        foreach (GameObject character in _spawnManager.PlayerList)
+        {
+            character.GetComponent<CharacterUIHandler>().InvokeOnHit += AttackOtherPlayer;
+        }
     }
 
     private void SetUpHealthBars()
     {
-        player1 = _spawnManager.PlayerList[0].GetComponent<CharacterStats>();
-        player2 = _spawnManager.PlayerList[1].GetComponent<CharacterStats>();
-        this.photonView.RPC("SetUpHealthBarCallBack",RpcTarget.All, player1.MaxHealth, player2.MaxHealth);
+        //player1 = _spawnManager.PlayerList[0].GetComponent<CharacterStats>();
+        //player2 = _spawnManager.PlayerList[1].GetComponent<CharacterStats>();
+        //this.photonView.RPC("SetUpHealthBarCallBack",RpcTarget.All, player1.MaxHealth, player2.MaxHealth);
     }
 
     [PunRPC]
@@ -47,6 +49,11 @@ public class BattleUI : MonoBehaviourPun
     {
         _PlayerOneHealthBar.value = player1.CurrentHealth;
         _PlayerTwoHealthBar.value = player2.CurrentHealth;
+    }
+
+    public void AttackOtherPlayer()
+    {
+        _spawnManager.PlayerList[0].GetComponent<CharacterStats>().TakeDamage(_spawnManager.PlayerList[1].GetComponent<CharacterStats>().Attack);
     }
 
     public void AttackPlayerOne()
