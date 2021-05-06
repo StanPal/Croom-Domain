@@ -49,8 +49,13 @@ public class CharacterUIHandler : MonoBehaviourPun
 
     }
 
-    [PunRPC]
     public void UpdateHealthBar()
+    {
+        this.photonView.RPC("UpdateHealthBarPun", RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void UpdateHealthBarPun()
     {
         _healthbar.value = _characterStats.CurrentHealth;
     }

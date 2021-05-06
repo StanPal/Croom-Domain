@@ -435,7 +435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24db97a5492d54142b3164f0e08edeaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterName: 
+  _characterName: Eagle
   _characterHealth: 100
   _characterAttack: 10
   _characterID: 2

@@ -21,8 +21,7 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     private void Awake()
     {
         _spawnManager = FindObjectOfType<SpawnManager>();
-        _characterMaxHealth = _characterHealth;
-        _characterName = PlayerPrefs.GetString("PlayerName");
+        _characterMaxHealth = _characterHealth;    
     }
     
 
@@ -48,7 +47,8 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
         else
         {
             //We are reading input to our health and write it back to our client and synced across the network
-            _characterHealth = (float)stream.ReceiveNext();
+            this._characterHealth = (float)stream.ReceiveNext();
+            this._characterName = (string)stream.ReceiveNext();
         }        
     }
 }
