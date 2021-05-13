@@ -9,11 +9,11 @@ public class CharacterUIHandler : MonoBehaviourPun
 {
     public event System.Action InvokeOnHit;
     [SerializeField] private Text playerName;
-    private Slider _healthbar;
+    [SerializeField] private Slider _healthbar;
     private CharacterStats _characterStats;
     public Slider RecieverSlider { get => _healthbar; }
     private BattleUI _battleUI;
-
+    private bool onHit; 
 
     private void Awake()
     {
@@ -31,12 +31,15 @@ public class CharacterUIHandler : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
-
+        _healthbar.value = _characterStats.CurrentHealth;
+        //if(onHit)
+        //{
+        //    this.photonView.RPC("UpdateHealthBarPun", RpcTarget.All);
+        //}
     }
 
     public void OnHit()
-    {
-        
+    {        
         this.photonView.RPC("TakeDamage", RpcTarget.All);
     }
 
@@ -51,6 +54,7 @@ public class CharacterUIHandler : MonoBehaviourPun
 
     public void UpdateHealthBar()
     {
+        //onHit = true;
         this.photonView.RPC("UpdateHealthBarPun", RpcTarget.All);
     }
 
@@ -58,5 +62,6 @@ public class CharacterUIHandler : MonoBehaviourPun
     public void UpdateHealthBarPun()
     {
         _healthbar.value = _characterStats.CurrentHealth;
+        onHit = false;
     }
 }

@@ -32,7 +32,26 @@ public class BattleManager : MonoBehaviour
         State = BattleState.Start;
 
     }
-   
+
+    private void Update()
+    {
+        switch (State)
+        {
+            case BattleState.Start:
+                break;
+            case BattleState.PlayerTurn:
+                break;
+            case BattleState.EnmeyTurn:
+                break;
+            case BattleState.Won:
+                break;
+            case BattleState.Lost:
+                break;
+            default:
+                break;
+        }
+    }
+
     public void PlayerDamaged(CharacterStats reciever, CharacterStats sender)
     {
         reciever.TakeDamage(sender.Attack);

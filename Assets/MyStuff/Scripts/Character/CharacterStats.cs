@@ -9,7 +9,15 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     [SerializeField] private string _characterName;
     [SerializeField] private float _characterHealth = 100;
     [SerializeField] private float _characterAttack = 10;
+    [SerializeField] private float _characterSpeed;
     [SerializeField] private int _characterID = 0;
+
+    public enum CharacterClass
+    {
+        Warrior,
+        Archer,
+        Mage
+    }
 
     public string PlayerName { get => _characterName; }
     public float MaxHealth { get => _characterMaxHealth; }
@@ -26,9 +34,18 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     
 
     public void TakeDamage(float damage)
-    {
+    {   
         _characterHealth -= damage;
+        Debug.Log(_characterName + " HP: " + _characterHealth);
+        if(_characterHealth <= 0)
+        {
+            _spawnManager.PlayerList.Remove(this.gameObject);
+            PhotonNetwork.Destroy(this.gameObject);
+            Debug.Log("Destroy Player");
+            PhotonNetwork.Disconnect();
+        }
     }
+    
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
