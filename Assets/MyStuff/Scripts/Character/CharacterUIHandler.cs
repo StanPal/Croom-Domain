@@ -6,10 +6,10 @@ using Photon.Pun;
 
 public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
 {
-    public event System.Action InvokeOnHit;
     [SerializeField] private Text playerName;
     [SerializeField] private Slider _healthbar;
     [SerializeField] private Button _attackBtn;
+    private Animator _animator;
     private CharacterStats _characterStats;
     private BattleUI _battleUI;
     private BattleManager _battleManager;
@@ -21,6 +21,7 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
 
     private void Awake()
     {
+        _animator = GetComponentInChildren<Animator>();
         _healthbar = GetComponentInChildren<Slider>();
         _characterStats = GetComponent<CharacterStats>();
         _battleUI = FindObjectOfType<BattleUI>();
@@ -57,6 +58,7 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
     public void OnHit()
     {        
         this.photonView.RPC("TakeDamage", RpcTarget.All);
+    
     }
 
 
@@ -78,6 +80,7 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
     [PunRPC]
     private void TakeDamage()
     {
+        _animator.SetTrigger("AttackTrigger");
         _battleUI.PunAttackOtherPlayer(this.gameObject);
         _canAttack = false;
         //_attackBtn.interactable = false;

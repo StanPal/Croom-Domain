@@ -19,9 +19,10 @@ public class SpawnManager : MonoBehaviourPun
         else
         {
             GameObject player2 = PhotonNetwork.Instantiate("Player2", _player2Pos.position, Quaternion.identity);
-            this.photonView.RPC("InvokePlayerInstantiated", RpcTarget.All);
+            //this.photonView.RPC("InvokePlayerInstantiated", RpcTarget.All);
         }
     }
+
 
     [PunRPC]
     public void InvokePlayerInstantiated()
