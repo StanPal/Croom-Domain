@@ -3,14 +3,18 @@ using UnityEngine;
 
 public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunInstantiateMagicCallback
 {
-    private SpawnManager _spawnManager;
 
+    private SpawnManager _spawnManager;
+    
     private float _characterMaxHealth;
+    private CharacterUIHandler _characterUIHandler;
     [SerializeField] private string _characterName;
     [SerializeField] private float _characterHealth = 100;
     [SerializeField] private float _characterAttack = 10;
-    [SerializeField] private float _characterSpeed;
+    [SerializeField] private float _characterSpeed = 10;
     [SerializeField] private int _characterID = 0;
+
+    public float Speed { get => _characterSpeed; }
 
     public enum CharacterClass
     {
@@ -24,12 +28,13 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     public float CurrentHealth { get => _characterHealth; set => _characterHealth = value; }
     public float Attack { get => _characterAttack; set => _characterAttack = value; }
     public int ID { get => _characterID; }
-
+    public CharacterUIHandler CharacterUIHandler { get => _characterUIHandler; }
 
     private void Awake()
     {
         _spawnManager = FindObjectOfType<SpawnManager>();
-        _characterMaxHealth = _characterHealth;    
+        _characterMaxHealth = _characterHealth;
+        _characterUIHandler = GetComponent<CharacterUIHandler>();
     }
     
 

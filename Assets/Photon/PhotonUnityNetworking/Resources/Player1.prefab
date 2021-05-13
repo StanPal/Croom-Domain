@@ -129,12 +129,13 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 1
-  OwnershipTransfer: 1
+  Synchronization: 3
+  OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
   - {fileID: 7666210376833388699}
   - {fileID: 4921841350584130632}
+  - {fileID: 814059389877506772}
   sceneViewId: 1
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -186,7 +187,7 @@ MonoBehaviour:
   _characterName: Crow
   _characterHealth: 100
   _characterAttack: 10
-  _characterSpeed: 0
+  _characterSpeed: 5
   _characterID: 1
 --- !u!114 &814059389877506772
 MonoBehaviour:
@@ -202,6 +203,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: {fileID: 1094752583534219039}
   _healthbar: {fileID: 6334160567995827729}
+  _attackBtn: {fileID: 6334160568236693602}
 --- !u!1001 &8541976246968156209
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -216,6 +218,14 @@ PrefabInstance:
     - target: {fileID: 2408378351098070560, guid: 3c432247a7d933f47881ad8539f3aeca, type: 3}
       propertyPath: m_MaxValue
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2408378351339460689, guid: 3c432247a7d933f47881ad8539f3aeca, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2408378351339460691, guid: 3c432247a7d933f47881ad8539f3aeca, type: 3}
+      propertyPath: m_Interactable
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2408378351339460691, guid: 3c432247a7d933f47881ad8539f3aeca, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -368,5 +378,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6334160568236693602 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2408378351339460691, guid: 3c432247a7d933f47881ad8539f3aeca, type: 3}
+  m_PrefabInstance: {fileID: 8541976246968156209}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
