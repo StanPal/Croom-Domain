@@ -69,8 +69,8 @@ public class BattleManager : MonoBehaviour
     {
         if(_spawnManager.PlayerList.Count >= minCharacterCount)
         {
-            _player1 = _spawnManager.PlayerList[0].GetComponent<CharacterStats>();
-            _player2 = _spawnManager.PlayerList[1].GetComponent<CharacterStats>();
+            _player1 = _spawnManager.PlayerList[0].GetComponentInChildren<CharacterStats>();
+            _player2 = _spawnManager.PlayerList[1].GetComponentInChildren<CharacterStats>();
             _state = BattleState.Start;
         }
     }

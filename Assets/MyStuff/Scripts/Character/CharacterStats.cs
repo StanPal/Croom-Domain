@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunInstantiateMagicCallback
 {
-   [SerializeField] private GameObject model;
     private SpawnManager _spawnManager;
     
     private float _characterMaxHealth;
@@ -54,20 +53,16 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
-        _spawnManager.PlayerList.Add(this.gameObject);
-        model.transform.position = this.transform.position;
-        this.photonView.RPC("rotateModel", RpcTarget.All);
+        _spawnManager.PlayerList.Add(this.gameObject);  
+        //this.photonView.RPC("rotateModel", RpcTarget.All);
 
-        Debug.Log("Adding Instatiated Player to List");
+        //Debug.Log("Adding Instatiated Player to List");
     }
 
     [PunRPC]
     private void rotateModel()
     {
-        if (_spawnManager.PlayerList.Count == 1)
-        {
-            model.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
-        }
+        transform.rotation = Quaternion.Euler(0f, 90f, 0f);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

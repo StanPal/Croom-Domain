@@ -10,19 +10,22 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
     [SerializeField] private Slider _healthbar;
     [SerializeField] private Button _attackBtn;
     private Animator _animator;
+    private Model _model;
     private CharacterStats _characterStats;
     private BattleUI _battleUI;
     private BattleManager _battleManager;
     private bool _canAttack = false;
-    private bool onHit; 
+    private bool onHit;
+    private SpawnManager _spawnManager;
 
     public Slider RecieverSlider { get => _healthbar; }    
     public bool CanAttack { get => _canAttack; set => _canAttack = value; }
+    public Animator Animator { get => _animator; set => _animator = value; }
 
     private void Awake()
     {
-        _animator = GetComponentInChildren<Animator>();
-        _healthbar = GetComponentInChildren<Slider>();
+        _spawnManager = FindObjectOfType<SpawnManager>();
+        _model = GetComponentInChildren<Model>();
         _characterStats = GetComponent<CharacterStats>();
         _battleUI = FindObjectOfType<BattleUI>();
         _battleManager = FindObjectOfType<BattleManager>();
@@ -31,6 +34,7 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
     void Start()
     {
         _attackBtn.interactable = false;
+        
         _healthbar.maxValue = _characterStats.MaxHealth;
         playerName.text = _characterStats.PlayerName;
     }
@@ -38,27 +42,32 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
     void Update()
     {
         _healthbar.value = _characterStats.CurrentHealth;
-        if(_canAttack)
+        if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
         {
-            _attackBtn.interactable = true;
+            return;
         }
         else
         {
-            _attackBtn.interactable = false;
+            if (_canAttack)
+            {
+                _attackBtn.interactable = true;
+            }
+            else
+            {
+                _attackBtn.interactable = false;
+            }
         }
     }
     
     public void OnAttack()
     {
         _canAttack = true;
-      //  this.photonView.RPC("PunOnAttack", RpcTarget.All);
 
     }
 
     public void OnHit()
     {        
-        this.photonView.RPC("TakeDamage", RpcTarget.All);
-    
+        this.photonView.RPC("TakeDamage", RpcTarget.All);    
     }
 
 
@@ -66,9 +75,6 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
     {
         _healthbar.value = _characterStats.CurrentHealth;
         onHit = false;
-
-        //onHit = true;
-        // this.photonView.RPC("UpdateHealthBarPun", RpcTarget.All);
     }
 
     [PunRPC]
@@ -80,7 +86,15 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
     [PunRPC]
     private void TakeDamage()
     {
-        _animator.SetTrigger("AttackTrigger");
+        if(_spawnManager.PlayerList[0].GetComponent<CharacterUIHandler>().CanAttack)
+        {
+            _spawnManager.PlayerModelList[0].GetComponent<Model>().IsAttacking = true;
+        }
+        if(_spawnManager.PlayerList[1].GetComponent<CharacterUIHandler>().CanAttack)
+        {
+            _spawnManager.PlayerModelList[1].GetComponent<Model>().IsAttacking = true;
+        }
+        //_animator.SetTrigger("AttackTrigger");
         _battleUI.PunAttackOtherPlayer(this.gameObject);
         _canAttack = false;
         //_attackBtn.interactable = false;
