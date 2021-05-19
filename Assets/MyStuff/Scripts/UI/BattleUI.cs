@@ -11,15 +11,14 @@ public class BattleUI : MonoBehaviourPun
     [SerializeField] private Slider _PlayerTwoHealthBar;
 
     private SpawnManager _spawnManager;
-    private PlayerListManager _playerListManager;
+
     private GameObject player1;
     private GameObject player2;
 
     private void Awake()
     {
         _battleManager = FindObjectOfType<BattleManager>();
-        _spawnManager = FindObjectOfType<SpawnManager>();
-        _playerListManager = FindObjectOfType<PlayerListManager>();
+        _spawnManager = FindObjectOfType<SpawnManager>();        
     }
 
     private void Start()

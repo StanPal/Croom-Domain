@@ -46,7 +46,7 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
             _spawnManager.PlayerList.Remove(this.gameObject);
             PhotonNetwork.Destroy(this.gameObject);
             Debug.Log("Destroy Player");
-            PhotonNetwork.Disconnect();
+           // PhotonNetwork.Disconnect();
         }
     }
     
@@ -54,7 +54,7 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         _spawnManager.PlayerList.Add(this.gameObject);  
-        //this.photonView.RPC("rotateModel", RpcTarget.All);
+        this.photonView.RPC("rotateModel", RpcTarget.All);
 
         //Debug.Log("Adding Instatiated Player to List");
     }
@@ -62,7 +62,15 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     [PunRPC]
     private void rotateModel()
     {
-        transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+        if (_spawnManager.PlayerList[0].gameObject == this.gameObject)
+        {
+            transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+        }
+        else
+        {
+            transform.rotation = Quaternion.Euler(0f, -90f, 0f);
+
+        }
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

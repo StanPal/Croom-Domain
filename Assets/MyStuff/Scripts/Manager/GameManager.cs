@@ -4,7 +4,29 @@ using Photon.Pun;
 using Photon.Realtime;
 
 public class GameManager : MonoBehaviourPunCallbacks
-{     
+{
+
+    private SpawnManager _spawnManager;
+
+    private void Awake()
+    {
+        _spawnManager = FindObjectOfType<SpawnManager>();
+    }
+
+    private void Start()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.Instantiate("Player1", _spawnManager.Player1Pos.position, Quaternion.identity);
+            PhotonNetwork.Instantiate("Paladin", _spawnManager.Player1Pos.position, Quaternion.identity);
+        }
+        else
+        {
+            PhotonNetwork.Instantiate("Player2", _spawnManager.Player2Pos.position, Quaternion.identity);
+            PhotonNetwork.Instantiate("Archer", _spawnManager.Player2Pos.position, Quaternion.identity);
+        }
+    }
+
     /// Called when the local player left the room. We need to load the launcher scene.
     public override void OnLeftRoom()
     {

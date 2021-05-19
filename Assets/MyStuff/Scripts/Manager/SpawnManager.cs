@@ -10,18 +10,13 @@ public class SpawnManager : MonoBehaviourPun
     public List<GameObject> PlayerList;
     public List<GameObject> PlayerModelList;
 
+    public Transform Player1Pos { get => _player1Pos; }
+    public Transform Player2Pos { get => _player2Pos; }
+
+
     void Start()
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            PhotonNetwork.Instantiate("Player1", _player1Pos.position, Quaternion.identity);
-            PhotonNetwork.Instantiate("Paladin", _player1Pos.position, Quaternion.identity);
-        }
-        else
-        {
-            PhotonNetwork.Instantiate("Player2", _player2Pos.position, Quaternion.identity);
-            PhotonNetwork.Instantiate("Archer", _player2Pos.position, Quaternion.identity);
-        }
+      
     }
 
 
