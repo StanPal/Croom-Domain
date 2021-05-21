@@ -1594,8 +1594,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3936474072044085544}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalPosition: {x: 0, y: 3.5, z: 0}
+  m_LocalScale: {x: 3.5, y: 3.5, z: 3.5}
   m_Children:
   - {fileID: 3306954500025519010}
   - {fileID: 4972546582596335582}
@@ -1691,6 +1691,7 @@ MonoBehaviour:
   _characterAttack: 10
   _characterSpeed: 3
   _characterID: 2
+  _class: 1
 --- !u!114 &1534366777953948977
 MonoBehaviour:
   m_ObjectHideFlags: 0

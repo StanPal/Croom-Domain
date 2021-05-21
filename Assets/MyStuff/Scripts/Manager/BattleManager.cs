@@ -105,7 +105,8 @@ public class BattleManager : MonoBehaviourPun
 
     private void EnemyTurn()
     {
-        _actionQueue.Peek().GetComponent<CharacterUIHandler>().OnAttack();
+
+       _actionQueue.Peek().GetComponent<CharacterUIHandler>().OnAttack();
     }
 
 }

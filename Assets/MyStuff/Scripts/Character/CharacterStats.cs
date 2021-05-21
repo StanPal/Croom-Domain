@@ -23,13 +23,15 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
         Mage
     }
 
+    [SerializeField] private CharacterClass _class = CharacterClass.Warrior;
+
     public string PlayerName { get => _characterName; }
     public float MaxHealth { get => _characterMaxHealth; }
     public float CurrentHealth { get => _characterHealth; set => _characterHealth = value; }
     public float Attack { get => _characterAttack; set => _characterAttack = value; }
     public int ID { get => _characterID; }
     public CharacterUIHandler CharacterUIHandler { get => _characterUIHandler; }
-
+    public CharacterClass ClassType { get => _class; } 
     private void Awake()
     {
         _spawnManager = FindObjectOfType<SpawnManager>();
@@ -72,7 +74,11 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
         if (_spawnManager.PlayerList[0].gameObject == this.gameObject)
         {
             transform.rotation = Quaternion.Euler(0f, 90f, 0f);
-            
+        }
+        else
+        {
+            transform.rotation = Quaternion.Euler(0f, -90f, 0f);
+
         }
 
     }

@@ -27,11 +27,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (CharacterStats.localPlayerInstance == null)
         {
             Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
-            if (playercount == 1)
+            if (PhotonNetwork.IsMasterClient)
             {
                 PhotonNetwork.Instantiate("Player1", p1Pos.position, Quaternion.identity);
             }
-            else if (playercount == 2)
+            else
             {
                 PhotonNetwork.Instantiate("Player2", p2Pos.position, Quaternion.identity);
             }

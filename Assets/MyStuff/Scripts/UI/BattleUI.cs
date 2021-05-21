@@ -50,6 +50,7 @@ public class BattleUI : MonoBehaviourPun
             _spawnManager.PlayerList[0].GetComponentInChildren<CharacterStats>().TakeDamage(_spawnManager.PlayerList[1].GetComponentInChildren<CharacterStats>().Attack);
             _spawnManager.PlayerList[0].GetComponent<CharacterUIHandler>().UpdateHealthBar();
         }
+
     }
     //public void AttackPlayerOne()
     //{

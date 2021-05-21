@@ -63,7 +63,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: AttackTrigger
+    m_ConditionEvent: ShotTrigger
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -6044691298852985251}
@@ -110,7 +110,7 @@ AnimatorController:
   m_Name: Archer_Anim
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: AttackTrigger
+  - m_Name: ShotTrigger
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0

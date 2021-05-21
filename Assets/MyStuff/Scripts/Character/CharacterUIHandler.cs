@@ -100,7 +100,15 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
         //{
         //    _spawnManager.PlayerModelList[1].GetComponent<Model>().IsAttacking = true;
         //}
-        _animator.SetTrigger("AttackTrigger");
+        if (_characterStats.ClassType == CharacterStats.CharacterClass.Archer)
+        {
+            _animator.SetTrigger("ShotTrigger");
+        }
+        else if (_characterStats.ClassType == CharacterStats.CharacterClass.Warrior)
+        {
+            _animator.SetTrigger("SlashTrigger");
+
+        }
         _battleUI.PunAttackOtherPlayer(this.gameObject);
         _canAttack = false;
         //_attackBtn.interactable = false;
