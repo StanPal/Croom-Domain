@@ -127,12 +127,6 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
         }
     }
 
-    [PunRPC]
-    public void UpdateHealthBarPun()
-    {
-        _healthbar.value = _characterStats.CurrentHealth;
-        onHit = false;
-    }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -141,8 +135,7 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
             stream.SendNext(_canAttack);
         }
         else
-        {
-            //We are reading input to our health and write it back to our client and synced across the network
+        {          
             this._canAttack = (bool)stream.ReceiveNext();
         }
     }

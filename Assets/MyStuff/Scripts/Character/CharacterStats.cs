@@ -48,9 +48,10 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     {
        if(CurrentHealth <= 0f)
         {
-            _spawnManager.PlayerList.Remove(this.gameObject);
-            PhotonNetwork.Destroy(this.gameObject);
-            GameManager.Instance.LeaveRoom();
+            this.gameObject.SetActive(false);
+            //_spawnManager.PlayerList.Remove(this.gameObject);
+            //PhotonNetwork.Destroy(this.gameObject);
+            //GameManager.Instance.LeaveRoom();
         }
     }
     
@@ -71,15 +72,23 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     [PunRPC]
     private void rotateModel()
     {
-        if (_spawnManager.PlayerList[0].gameObject == this.gameObject)
+        if(ClassType == CharacterClass.Warrior)
         {
             transform.rotation = Quaternion.Euler(0f, 90f, 0f);
         }
         else
         {
-            transform.rotation = Quaternion.Euler(0f, -90f, 0f);
-
+            transform.rotation = Quaternion.Euler(0f, -45f, 0f);
         }
+        //if (_spawnManager.PlayerList[0] == this.gameObject)
+        //{
+        //    transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+        //}
+        //else
+        //{
+        //    transform.rotation = Quaternion.Euler(0f, -90f, 0f);
+
+        //}
 
     }
 
