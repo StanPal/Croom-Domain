@@ -24,6 +24,7 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
 
     private void Awake()
     {
+        _animator = GetComponent<Animator>();
         _spawnManager = FindObjectOfType<SpawnManager>();
         _model = GetComponentInChildren<Model>();
         _characterStats = GetComponent<CharacterStats>();
@@ -86,15 +87,15 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
     [PunRPC]
     private void TakeDamage()
     {
-        if(_spawnManager.PlayerList[0].GetComponent<CharacterUIHandler>().CanAttack)
-        {
-            _spawnManager.PlayerModelList[0].GetComponent<Model>().IsAttacking = true;
-        }
-        if(_spawnManager.PlayerList[1].GetComponent<CharacterUIHandler>().CanAttack)
-        {
-            _spawnManager.PlayerModelList[1].GetComponent<Model>().IsAttacking = true;
-        }
-        //_animator.SetTrigger("AttackTrigger");
+        //if(_spawnManager.PlayerList[0].GetComponent<CharacterUIHandler>().CanAttack)
+        //{
+        //    _spawnManager.PlayerModelList[0].GetComponent<Model>().IsAttacking = true;
+        //}
+        //if(_spawnManager.PlayerList[1].GetComponent<CharacterUIHandler>().CanAttack)
+        //{
+        //    _spawnManager.PlayerModelList[1].GetComponent<Model>().IsAttacking = true;
+        //}
+        _animator.SetTrigger("AttackTrigger");
         _battleUI.PunAttackOtherPlayer(this.gameObject);
         _canAttack = false;
         //_attackBtn.interactable = false;

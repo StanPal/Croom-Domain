@@ -4,7 +4,8 @@ using UnityEngine;
 public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunInstantiateMagicCallback
 {
     private SpawnManager _spawnManager;
-    
+    public static GameObject localPlayerInstance; 
+
     private float _characterMaxHealth;
     private CharacterUIHandler _characterUIHandler;
     [SerializeField] private string _characterName;
@@ -34,29 +35,36 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
         _spawnManager = FindObjectOfType<SpawnManager>();
         _characterMaxHealth = _characterHealth;
         _characterUIHandler = GetComponent<CharacterUIHandler>();
+        if(photonView.IsMine)
+        {
+            CharacterStats.localPlayerInstance = this.gameObject;
+        }
+            DontDestroyOnLoad(this.gameObject);
+        
     }
-    
 
-    public void TakeDamage(float damage)
-    {   
-        _characterHealth -= damage;
-        Debug.Log(_characterName + " HP: " + _characterHealth);
-        if(_characterHealth <= 0)
+    private void Update()
+    {
+       if(CurrentHealth <= 0f)
         {
             _spawnManager.PlayerList.Remove(this.gameObject);
             PhotonNetwork.Destroy(this.gameObject);
-            Debug.Log("Destroy Player");
-           // PhotonNetwork.Disconnect();
+            GameManager.Instance.LeaveRoom();
         }
     }
     
+    public void TakeDamage(float damage)
+    {   
+        _characterHealth -= damage;
+        Debug.Log(_characterName + " HP: " + _characterHealth);        
+    }
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
-        _spawnManager.PlayerList.Add(this.gameObject);  
+       // info.Sender.TagObject = this.gameObject;
+       _spawnManager.PlayerList.Add(this.gameObject);  
         this.photonView.RPC("rotateModel", RpcTarget.All);
-
-        //Debug.Log("Adding Instatiated Player to List");
+        //     Debug.Log("Adding Instatiated Player to List");
     }
 
     [PunRPC]
@@ -65,12 +73,9 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
         if (_spawnManager.PlayerList[0].gameObject == this.gameObject)
         {
             transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+            
         }
-        else
-        {
-            transform.rotation = Quaternion.Euler(0f, -90f, 0f);
 
-        }
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

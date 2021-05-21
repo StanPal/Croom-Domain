@@ -1,10 +1,11 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public enum BattleState {SetupStage, Start, PlayerTurn, EnemyTurn, Won, Lost}
 
-public class BattleManager : MonoBehaviour
+public class BattleManager : MonoBehaviourPun
 {
 
     public System.Action OnDamage;
@@ -39,10 +40,10 @@ public class BattleManager : MonoBehaviour
         switch (_state)
         {
             case BattleState.SetupStage:
-                SetUpPhase();
+                this.photonView.RPC("SetUpPhase",RpcTarget.All);
                 break;
             case BattleState.Start:
-                SetUpTurnQueue();
+                this.photonView.RPC("SetUpTurnQueue", RpcTarget.All);
                 break;
             case BattleState.PlayerTurn:
                 PlayerTurn();
@@ -65,8 +66,10 @@ public class BattleManager : MonoBehaviour
         OnDamage?.Invoke();
     }
 
+    [PunRPC]
     private void SetUpPhase()
     {
+        Debug.Log(_spawnManager == null);
         if(_spawnManager.PlayerList.Count >= minCharacterCount)
         {
             _player1 = _spawnManager.PlayerList[0].GetComponentInChildren<CharacterStats>();
@@ -75,6 +78,7 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    [PunRPC]
     private void SetUpTurnQueue()
     {
         if(_player1.Speed > _player2.Speed)

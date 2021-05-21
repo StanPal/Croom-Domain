@@ -5,27 +5,41 @@ using Photon.Realtime;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
-
+    public GameObject playerPrefab; 
     private SpawnManager _spawnManager;
+    private BattleManager _battleManager;
+    public static GameManager Instance;
+    private int playercount;
 
     private void Awake()
     {
+        _battleManager = FindObjectOfType<BattleManager>();
         _spawnManager = FindObjectOfType<SpawnManager>();
     }
 
     private void Start()
     {
-        if (PhotonNetwork.IsMasterClient)
+        Instance = this;
+        playercount = PhotonNetwork.CountOfPlayers;
+        
+        if (CharacterStats.localPlayerInstance == null)
         {
-            PhotonNetwork.Instantiate("Player1", _spawnManager.Player1Pos.position, Quaternion.identity);
-            PhotonNetwork.Instantiate("Paladin", _spawnManager.Player1Pos.position, Quaternion.identity);
+            Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
+            if (playercount == 1)
+            {
+                PhotonNetwork.Instantiate("Player1", _spawnManager.Player1Pos.position, Quaternion.identity);
+            }
+            else if (playercount == 2)
+            {
+                PhotonNetwork.Instantiate("Player2", _spawnManager.Player2Pos.position, Quaternion.identity);
+            }
         }
         else
         {
-            PhotonNetwork.Instantiate("Player2", _spawnManager.Player2Pos.position, Quaternion.identity);
-            PhotonNetwork.Instantiate("Archer", _spawnManager.Player2Pos.position, Quaternion.identity);
+            Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
         }
     }
+
 
     /// Called when the local player left the room. We need to load the launcher scene.
     public override void OnLeftRoom()
@@ -68,7 +82,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             Debug.LogError("PhotonNetwork : Trying to Load a level but we are not the master Client");
         }
-        Debug.LogFormat("PhotonNetwork : Loading Level : {0}", PhotonNetwork.CurrentRoom.PlayerCount);
         PhotonNetwork.LoadLevel("Room for " + 1);
     }
 
