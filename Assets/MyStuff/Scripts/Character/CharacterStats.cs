@@ -34,7 +34,6 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     {
         _spawnManager = FindObjectOfType<SpawnManager>();
         _characterMaxHealth = _characterHealth;
-        _characterUIHandler = GetComponent<CharacterUIHandler>();
         if(photonView.IsMine)
         {
             CharacterStats.localPlayerInstance = this.gameObject;

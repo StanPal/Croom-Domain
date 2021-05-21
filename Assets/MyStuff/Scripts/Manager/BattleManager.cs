@@ -7,7 +7,7 @@ public enum BattleState {SetupStage, Start, PlayerTurn, EnemyTurn, Won, Lost}
 
 public class BattleManager : MonoBehaviourPun
 {
-
+    public static BattleManager Instance;
     public System.Action OnDamage;
     [SerializeField] private BattleState _state;
     [SerializeField] private Queue<CharacterStats> _actionQueue;
@@ -25,6 +25,11 @@ public class BattleManager : MonoBehaviourPun
 
     private void Awake()
     {
+        GameLoader.CallOnComplete(Initialize);
+    }
+
+    private void Initialize()
+    {
         _spawnManager = FindObjectOfType<SpawnManager>();
     }
 
@@ -40,10 +45,10 @@ public class BattleManager : MonoBehaviourPun
         switch (_state)
         {
             case BattleState.SetupStage:
-                this.photonView.RPC("SetUpPhase",RpcTarget.All);
+                SetUpPhase();
                 break;
             case BattleState.Start:
-                this.photonView.RPC("SetUpTurnQueue", RpcTarget.All);
+                SetUpTurnQueue();
                 break;
             case BattleState.PlayerTurn:
                 PlayerTurn();
@@ -66,10 +71,9 @@ public class BattleManager : MonoBehaviourPun
         OnDamage?.Invoke();
     }
 
-    [PunRPC]
     private void SetUpPhase()
     {
-        Debug.Log(_spawnManager == null);
+
         if(_spawnManager.PlayerList.Count >= minCharacterCount)
         {
             _player1 = _spawnManager.PlayerList[0].GetComponentInChildren<CharacterStats>();
@@ -78,7 +82,6 @@ public class BattleManager : MonoBehaviourPun
         }
     }
 
-    [PunRPC]
     private void SetUpTurnQueue()
     {
         if(_player1.Speed > _player2.Speed)
@@ -97,12 +100,12 @@ public class BattleManager : MonoBehaviourPun
 
     private void PlayerTurn()
     {
-        _actionQueue.Peek().CharacterUIHandler.OnAttack();
+        _actionQueue.Peek().GetComponent<CharacterUIHandler>().OnAttack();
     }
 
     private void EnemyTurn()
     {
-        _actionQueue.Peek().CharacterUIHandler.OnAttack();
+        _actionQueue.Peek().GetComponent<CharacterUIHandler>().OnAttack();
     }
 
 }

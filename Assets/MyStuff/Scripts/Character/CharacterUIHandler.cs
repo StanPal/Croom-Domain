@@ -24,11 +24,16 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
 
     private void Awake()
     {
+        GameLoader.CallOnComplete(Initialize);
+        
+    }
+
+    private void Initialize()
+    {
         _animator = GetComponent<Animator>();
-        _spawnManager = FindObjectOfType<SpawnManager>();
-        _model = GetComponentInChildren<Model>();
-        _characterStats = GetComponent<CharacterStats>();
         _battleUI = FindObjectOfType<BattleUI>();
+        _spawnManager = ServiceLocator.Get<SpawnManager>();        
+        _characterStats = GetComponent<CharacterStats>();
         _battleManager = FindObjectOfType<BattleManager>();
     }
 

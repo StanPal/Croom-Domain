@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     private BattleManager _battleManager;
     public static GameManager Instance;
     private int playercount;
+    [SerializeField] private Transform p1Pos;
+    [SerializeField] private Transform p2Pos;
 
     private void Awake()
     {
@@ -27,11 +29,11 @@ public class GameManager : MonoBehaviourPunCallbacks
             Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
             if (playercount == 1)
             {
-                PhotonNetwork.Instantiate("Player1", _spawnManager.Player1Pos.position, Quaternion.identity);
+                PhotonNetwork.Instantiate("Player1", p1Pos.position, Quaternion.identity);
             }
             else if (playercount == 2)
             {
-                PhotonNetwork.Instantiate("Player2", _spawnManager.Player2Pos.position, Quaternion.identity);
+                PhotonNetwork.Instantiate("Player2", p2Pos.position, Quaternion.identity);
             }
         }
         else

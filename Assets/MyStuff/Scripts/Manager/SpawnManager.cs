@@ -13,19 +13,11 @@ public class SpawnManager : MonoBehaviourPun
     public Transform Player1Pos { get => _player1Pos; }
     public Transform Player2Pos { get => _player2Pos; }
     public int count = 0;
-    public static SpawnManager Instance;
+
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(this.gameObject);
-        }
-        else if (Instance != this)
-        {
-            Destroy(gameObject);
-        }
+        ServiceLocator.Register<SpawnManager>(this);
     }
 
     [PunRPC]
