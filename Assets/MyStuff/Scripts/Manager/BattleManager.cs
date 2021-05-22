@@ -7,6 +7,7 @@ public enum BattleState {SetupStage, Start, PlayerTurn, EnemyTurn, Won, Lost}
 
 public class BattleManager : MonoBehaviourPun
 {
+    
     public static BattleManager Instance;
     public System.Action OnDamage;
     [SerializeField] private BattleState _state;
@@ -102,7 +103,7 @@ public class BattleManager : MonoBehaviourPun
     {
         if(_actionQueue.Peek().TryGetComponent<CharacterUIHandler>(out CharacterUIHandler characterUI))
         {
-            characterUI.OnMove();
+            characterUI.OnMove(); 
         }
 
     }

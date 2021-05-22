@@ -215,6 +215,7 @@ MonoBehaviour:
   _characterSpeed: 5
   _characterID: 1
   _class: 0
+  _combatState: 0
 --- !u!114 &814059389877506772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,7 +228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2567b9b4b0550234f96f6a78139f5081, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerName: {fileID: 1094752583534219039}
+  _playerName: {fileID: 1094752583534219039}
   _healthbar: {fileID: 6334160567995827729}
   _attackBtn: {fileID: 6334160568236693602}
   _actionButtonlist:
@@ -268,10 +269,10 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: SlashTrigger
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: IsShielding
   m_SynchronizeLayers:
   - SynchronizeType: 0
@@ -2877,9 +2878,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1474406939586119317}
-        m_TargetAssemblyTypeName: WarriorSkills, Assembly-CSharp
-        m_MethodName: OnShield
+      - m_Target: {fileID: 814059389877506772}
+        m_TargetAssemblyTypeName: CharacterUIHandler, Assembly-CSharp
+        m_MethodName: OnSkillOne
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

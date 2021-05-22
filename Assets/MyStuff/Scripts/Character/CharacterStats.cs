@@ -1,31 +1,39 @@
 using Photon.Pun;
 using UnityEngine;
 
+public enum CharacterClass
+{
+    Warrior,
+    Archer,
+    Mage
+}
+
+public enum CombatState
+{
+    None,
+    Attacking,
+    Defending
+}
+
 public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunInstantiateMagicCallback
 {
-    private SpawnManager _spawnManager;
     public static GameObject localPlayerInstance; 
-
-    private float _characterMaxHealth;
+    private SpawnManager _spawnManager;
     private CharacterUIHandler _characterUIHandler;
+    
+
     [SerializeField] private string _characterName;
     [SerializeField] private float _characterHealth = 100;
     [SerializeField] private float _characterAttack = 10;
     [SerializeField] private float _characterSpeed = 10;
     [SerializeField] private int _characterID = 0;
+    [SerializeField] private CharacterClass _class = CharacterClass.Warrior;
+    [SerializeField] private CombatState _combatState = CombatState.None;
+
+    private float _characterMaxHealth;
     private bool _isShielding; 
 
     public float Speed { get => _characterSpeed; }
-
-    public enum CharacterClass
-    {
-        Warrior,
-        Archer,
-        Mage
-    }
-
-    [SerializeField] private CharacterClass _class = CharacterClass.Warrior;
-
     public string PlayerName { get => _characterName; }
     public float MaxHealth { get => _characterMaxHealth; }
     public float CurrentHealth { get => _characterHealth; set => _characterHealth = value; }
@@ -33,6 +41,7 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     public int ID { get => _characterID; }
     public CharacterUIHandler CharacterUIHandler { get => _characterUIHandler; }
     public CharacterClass ClassType { get => _class; } 
+    public CombatState CombatState { get => _combatState; set => _combatState = value; }
     public bool Shield { get => _isShielding; set => _isShielding = value; }
 
     private void Awake()
@@ -62,6 +71,7 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     {   
         if(_isShielding)
         {
+            _combatState = CombatState.None;
           _characterHealth -= (damage * 0.5f);
         }
         else

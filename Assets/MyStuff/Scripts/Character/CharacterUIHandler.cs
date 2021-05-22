@@ -6,18 +6,22 @@ using Photon.Pun;
 
 public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
 {
-    [SerializeField] private Text playerName;
+    [SerializeField] private Text _playerName;
     [SerializeField] private Slider _healthbar;
     [SerializeField] private Button _attackBtn;
     [SerializeField] private List<Button> _actionButtonlist = new List<Button>();
     private Animator _animator;
+    private ActionManager _actionManager;
     private Model _model;
     private CharacterStats _characterStats;
     private BattleUI _battleUI;
     private BattleManager _battleManager;
+
     private bool _canMove = false;
     private bool _canAttack = false;
-    private bool onHit;
+    private bool _playerTurn = false;
+    private bool _actionsReset = false;
+    private bool _onHit;
     private SpawnManager _spawnManager;
 
     public Slider RecieverSlider { get => _healthbar; }
@@ -33,19 +37,20 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
 
     private void Initialize()
     {
+        _actionManager = FindObjectOfType<ActionManager>();   
         _animator = GetComponent<Animator>();
         _battleUI = FindObjectOfType<BattleUI>();
-        _spawnManager = ServiceLocator.Get<SpawnManager>();        
+        _spawnManager = ServiceLocator.Get<SpawnManager>();
         _characterStats = GetComponent<CharacterStats>();
         _battleManager = FindObjectOfType<BattleManager>();
     }
 
     void Start()
     {
-        _attackBtn.interactable = false;
-        
+        ResetActionButtons();
+        ResetSkill();
         _healthbar.maxValue = _characterStats.MaxHealth;
-        playerName.text = _characterStats.PlayerName;
+        _playerName.text = _characterStats.PlayerName;
     }
    
     void Update()
@@ -68,13 +73,17 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
             {
                 ResetActionButtons();
             }
+            
         }
     }
     
     public void OnMove()
     {
         _canMove = true;
-
+        if(_characterStats.CombatState == CombatState.None)
+        {
+            ResetSkill();
+        }
     }
 
     public void OnAttack()
@@ -85,29 +94,33 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
     public void UpdateHealthBar()
     {
         _healthbar.value = _characterStats.CurrentHealth;
-        onHit = false;
+        _onHit = false;
     }
 
-    [PunRPC]
-    private void PunOnAttack()
+    public void OnSkillOne()
     {
-        _canAttack = true;
+        _actionManager.InvokeSkill(this.gameObject, _characterStats.ClassType);
+    }
+
+    public void ResetSkill()
+    {
+        _actionManager.ResetSkillBehaviours(this.gameObject, _characterStats.ClassType); 
     }
 
     [PunRPC]
     private void TakeDamage()
     {
-        if (_characterStats.ClassType == CharacterStats.CharacterClass.Archer)
+        if (_characterStats.ClassType == CharacterClass.Archer)
         {
             _animator.SetTrigger("ShotTrigger");
         }
-        else if (_characterStats.ClassType == CharacterStats.CharacterClass.Warrior)
+        else if (_characterStats.ClassType == CharacterClass.Warrior)
         {
             _animator.SetTrigger("SlashTrigger");
 
         }
         _battleUI.PunAttackOtherPlayer(this.gameObject);
-        _canMove = false;
+        Invoke("ResetSkill",0.5f);
         ActionQueueCall();
     }
 
@@ -121,7 +134,11 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
 
     public void ActionQueueCall()
     {
-        _battleManager.ActionQueue.Dequeue();
+        _canMove = false;        
+        if (_battleManager.ActionQueue.Count > 0)
+        {
+            _battleManager.ActionQueue.Dequeue();
+        }
         Debug.Log("Current Queue Count: " + _battleManager.ActionQueue.Count);
         if (_battleManager.ActionQueue.Count == 0)
         {

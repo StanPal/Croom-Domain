@@ -1692,6 +1692,7 @@ MonoBehaviour:
   _characterSpeed: 3
   _characterID: 2
   _class: 1
+  _combatState: 0
 --- !u!114 &1534366777953948977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1704,7 +1705,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2567b9b4b0550234f96f6a78139f5081, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerName: {fileID: 2031699167063116669}
+  _playerName: {fileID: 2031699167063116669}
   _healthbar: {fileID: 4964138277672256115}
   _attackBtn: {fileID: 4964138277951396864}
   _actionButtonlist:
@@ -1744,7 +1745,7 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: ShotTrigger
   m_SynchronizeLayers:
   - SynchronizeType: 0
