@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class MenuUI : MonoBehaviour
 {   
@@ -14,7 +11,7 @@ public class MenuUI : MonoBehaviour
 
     public void GoToCoOpMode()
     {
-        SceneManager.LoadScene("CoOpMode");
+        SceneManager.LoadScene("NetworkConnect");
     }
 
     public void GoToCharacter()
@@ -26,6 +23,10 @@ public class MenuUI : MonoBehaviour
     {
         SceneManager.LoadScene(0);
     }
-    
 
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
+    
 }
