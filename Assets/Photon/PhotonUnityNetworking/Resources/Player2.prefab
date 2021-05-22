@@ -1707,6 +1707,8 @@ MonoBehaviour:
   playerName: {fileID: 2031699167063116669}
   _healthbar: {fileID: 4964138277672256115}
   _attackBtn: {fileID: 4964138277951396864}
+  _actionButtonlist:
+  - {fileID: 4964138277951396864}
 --- !u!95 &6653439894873575791
 Animator:
   serializedVersion: 3
@@ -3283,7 +3285,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4777343121868034645, guid: 8eac7f9cd52220740b3a5f74016862c3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnHit
+      value: OnAttack
       objectReference: {fileID: 0}
     - target: {fileID: 4777343121868034645, guid: 8eac7f9cd52220740b3a5f74016862c3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName

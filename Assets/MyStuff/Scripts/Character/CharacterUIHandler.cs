@@ -9,16 +9,19 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
     [SerializeField] private Text playerName;
     [SerializeField] private Slider _healthbar;
     [SerializeField] private Button _attackBtn;
+    [SerializeField] private List<Button> _actionButtonlist = new List<Button>();
     private Animator _animator;
     private Model _model;
     private CharacterStats _characterStats;
     private BattleUI _battleUI;
     private BattleManager _battleManager;
+    private bool _canMove = false;
     private bool _canAttack = false;
     private bool onHit;
     private SpawnManager _spawnManager;
 
-    public Slider RecieverSlider { get => _healthbar; }    
+    public Slider RecieverSlider { get => _healthbar; }
+    public bool CanMove { get => _canMove; set => _canMove = value; }
     public bool CanAttack { get => _canAttack; set => _canAttack = value; }
     public Animator Animator { get => _animator; set => _animator = value; }
 
@@ -54,28 +57,30 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
         }
         else
         {
-            if (_canAttack)
+            if (_canMove)
             {
-                _attackBtn.interactable = true;
+                for (int i = 0; i < _actionButtonlist.Count; i++)
+                {
+                    _actionButtonlist[i].interactable = true;
+                }
             }
             else
             {
-                _attackBtn.interactable = false;
+                ResetActionButtons();
             }
         }
     }
     
-    public void OnAttack()
+    public void OnMove()
     {
-        _canAttack = true;
+        _canMove = true;
 
     }
 
-    public void OnHit()
+    public void OnAttack()
     {        
-        this.photonView.RPC("TakeDamage", RpcTarget.All);    
+        this.photonView.RPC("TakeDamage", RpcTarget.All);
     }
-
 
     public void UpdateHealthBar()
     {
@@ -92,14 +97,6 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
     [PunRPC]
     private void TakeDamage()
     {
-        //if(_spawnManager.PlayerList[0].GetComponent<CharacterUIHandler>().CanAttack)
-        //{
-        //    _spawnManager.PlayerModelList[0].GetComponent<Model>().IsAttacking = true;
-        //}
-        //if(_spawnManager.PlayerList[1].GetComponent<CharacterUIHandler>().CanAttack)
-        //{
-        //    _spawnManager.PlayerModelList[1].GetComponent<Model>().IsAttacking = true;
-        //}
         if (_characterStats.ClassType == CharacterStats.CharacterClass.Archer)
         {
             _animator.SetTrigger("ShotTrigger");
@@ -110,10 +107,23 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
 
         }
         _battleUI.PunAttackOtherPlayer(this.gameObject);
-        _canAttack = false;
-        //_attackBtn.interactable = false;
+        _canMove = false;
+        ActionQueueCall();
+    }
+
+    public void ResetActionButtons()
+    {
+        for (int i = 0; i < _actionButtonlist.Count; i++)
+        {
+            _actionButtonlist[i].interactable = false;
+        }
+    }
+
+    public void ActionQueueCall()
+    {
         _battleManager.ActionQueue.Dequeue();
-        if(_battleManager.ActionQueue.Count == 0)
+        Debug.Log("Current Queue Count: " + _battleManager.ActionQueue.Count);
+        if (_battleManager.ActionQueue.Count == 0)
         {
             _battleManager.State = BattleState.Start;
         }
@@ -126,7 +136,6 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
             _battleManager.State = BattleState.EnemyTurn;
         }
     }
-
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {

@@ -94,13 +94,17 @@ public class BattleManager : MonoBehaviourPun
             _actionQueue.Enqueue(_player2);
             _actionQueue.Enqueue(_player1);
         }
-
+        Debug.Log(_actionQueue.Count);
         _state = BattleState.PlayerTurn;
     }
 
     private void PlayerTurn()
     {
-        _actionQueue.Peek().GetComponent<CharacterUIHandler>().OnAttack();
+        if(_actionQueue.Peek().TryGetComponent<CharacterUIHandler>(out CharacterUIHandler characterUI))
+        {
+            characterUI.OnMove();
+        }
+
     }
 
     private void EnemyTurn()
@@ -108,7 +112,7 @@ public class BattleManager : MonoBehaviourPun
 
        if(_actionQueue.Peek().TryGetComponent<CharacterUIHandler>(out CharacterUIHandler characterUI))
         {
-            characterUI.OnAttack();
+            characterUI.OnMove();
         }
     }
 

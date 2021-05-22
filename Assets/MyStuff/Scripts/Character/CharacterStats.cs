@@ -13,6 +13,7 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     [SerializeField] private float _characterAttack = 10;
     [SerializeField] private float _characterSpeed = 10;
     [SerializeField] private int _characterID = 0;
+    private bool _isShielding; 
 
     public float Speed { get => _characterSpeed; }
 
@@ -32,6 +33,8 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     public int ID { get => _characterID; }
     public CharacterUIHandler CharacterUIHandler { get => _characterUIHandler; }
     public CharacterClass ClassType { get => _class; } 
+    public bool Shield { get => _isShielding; set => _isShielding = value; }
+
     private void Awake()
     {
         _spawnManager = FindObjectOfType<SpawnManager>();
@@ -57,8 +60,15 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     
     public void TakeDamage(float damage)
     {   
-        _characterHealth -= damage;
-        Debug.Log(_characterName + " HP: " + _characterHealth);        
+        if(_isShielding)
+        {
+          _characterHealth -= (damage * 0.5f);
+        }
+        else
+        {
+            _characterHealth -= damage;
+        }
+        Debug.Log(_characterName + " HP: " + _characterHealth);
     }
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
@@ -66,7 +76,6 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
        // info.Sender.TagObject = this.gameObject;
        _spawnManager.PlayerList.Add(this.gameObject);  
         this.photonView.RPC("rotateModel", RpcTarget.All);
-        //     Debug.Log("Adding Instatiated Player to List");
     }
 
     [PunRPC]
@@ -80,16 +89,6 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
         {
             transform.rotation = Quaternion.Euler(0f, -45f, 0f);
         }
-        //if (_spawnManager.PlayerList[0] == this.gameObject)
-        //{
-        //    transform.rotation = Quaternion.Euler(0f, 90f, 0f);
-        //}
-        //else
-        //{
-        //    transform.rotation = Quaternion.Euler(0f, -90f, 0f);
-
-        //}
-
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
