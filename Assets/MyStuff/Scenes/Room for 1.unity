@@ -335,12 +335,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5542161970403315377, guid: 403743d9e9b7968429058972d288e932, type: 3}
       propertyPath: m_Name
-      value: UIManager
+      value: BattleManger
       objectReference: {fileID: 0}
-    - target: {fileID: 5542161970403315379, guid: 403743d9e9b7968429058972d288e932, type: 3}
-      propertyPath: _battleManager
-      value: 
-      objectReference: {fileID: 530775039}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 403743d9e9b7968429058972d288e932, type: 3}
 --- !u!1001 &530775038
@@ -352,7 +348,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 55180819425972536, guid: bad67fba94b1c3d4b89e78cffb555649, type: 3}
       propertyPath: m_Name
-      value: BattleManager
+      value: TurnManager
       objectReference: {fileID: 0}
     - target: {fileID: 55180819425972543, guid: bad67fba94b1c3d4b89e78cffb555649, type: 3}
       propertyPath: m_RootOrder
@@ -400,17 +396,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bad67fba94b1c3d4b89e78cffb555649, type: 3}
---- !u!114 &530775039 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 55180819425972542, guid: bad67fba94b1c3d4b89e78cffb555649, type: 3}
-  m_PrefabInstance: {fileID: 530775038}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fcc339da569ab248a57313948fdb454, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &760667367
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,6 +4,29 @@ using UnityEngine;
 
 public class ActionManager : MonoBehaviour
 {
+    public void AttackingOtherPlayer(GameObject player, CharacterClass classType)
+    {
+        switch (classType)
+        {
+            case CharacterClass.Warrior:
+                if (player.TryGetComponent<WarriorSkills>(out WarriorSkills warrior))
+                {
+                    warrior.OnNormalAttack();
+                }
+                    break;
+            case CharacterClass.Archer:
+                if (player.TryGetComponent<ArcherSkills>(out ArcherSkills archer))
+                {
+                    archer.OnNormalAttack();
+                }
+                    break;
+            case CharacterClass.Mage:
+                break;
+            default:
+                break;
+        }
+    }
+
     public void ResetSkillBehaviours(GameObject player, CharacterClass classType)
     {
         switch (classType)
@@ -28,7 +51,10 @@ public class ActionManager : MonoBehaviour
         switch (classType)
         {
             case CharacterClass.Warrior:
-                player.GetComponent<WarriorSkills>().OnGuard();
+                if (player.TryGetComponent<WarriorSkills>(out WarriorSkills warrior))
+                {
+                    player.GetComponent<WarriorSkills>().OnGuard();
+                }
                 break;
             case CharacterClass.Archer:
                 break;

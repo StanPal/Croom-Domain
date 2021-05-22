@@ -87,8 +87,9 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
     }
 
     public void OnAttack()
-    {        
-        this.photonView.RPC("TakeDamage", RpcTarget.All);
+    {
+        _actionManager.AttackingOtherPlayer(this.gameObject, _characterStats.ClassType);
+       // this.photonView.RPC("TakeDamage", RpcTarget.All);
     }
 
     public void UpdateHealthBar()
@@ -107,22 +108,21 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
         _actionManager.ResetSkillBehaviours(this.gameObject, _characterStats.ClassType); 
     }
 
-    [PunRPC]
-    private void TakeDamage()
-    {
-        if (_characterStats.ClassType == CharacterClass.Archer)
-        {
-            _animator.SetTrigger("ShotTrigger");
-        }
-        else if (_characterStats.ClassType == CharacterClass.Warrior)
-        {
-            _animator.SetTrigger("SlashTrigger");
+    //[PunRPC]
+    //private void TakeDamage()
+    //{
+    //    if (_characterStats.ClassType == CharacterClass.Archer)
+    //    {
+    //        _animator.SetTrigger("ShotTrigger");
+    //    }
+    //    else if (_characterStats.ClassType == CharacterClass.Warrior)
+    //    {
+    //        _animator.SetTrigger("SlashTrigger");
 
-        }
-        _BattleManager.PunAttackOtherPlayer(this.gameObject);
-        Invoke("ResetSkill",0.5f);
-        ActionQueueCall();
-    }
+    //    }
+    //    _BattleManager.PunAttackOtherPlayer(this.gameObject, _characterStats.Attack);        
+    //    ActionQueueCall();
+    //}
 
     public void ResetActionButtons()
     {

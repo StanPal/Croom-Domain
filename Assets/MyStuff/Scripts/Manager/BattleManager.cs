@@ -27,17 +27,17 @@ public class BattleManager : MonoBehaviourPun
     }
 
     [PunRPC]
-    public void PunAttackOtherPlayer(GameObject player)
+    public void PunAttackOtherPlayer(GameObject player, float damage)
     {
         if (_spawnManager.PlayerList[0] == player)
         {
-            _spawnManager.PlayerList[1].GetComponentInChildren<CharacterStats>().TakeDamage(_spawnManager.PlayerList[0].GetComponentInChildren<CharacterStats>().Attack);
+            _spawnManager.PlayerList[1].GetComponentInChildren<CharacterStats>().TakeDamage(damage);
             _spawnManager.PlayerList[1].GetComponent<CharacterUIHandler>().UpdateHealthBar();
 
         }
         else
         {
-            _spawnManager.PlayerList[0].GetComponentInChildren<CharacterStats>().TakeDamage(_spawnManager.PlayerList[1].GetComponentInChildren<CharacterStats>().Attack);
+            _spawnManager.PlayerList[0].GetComponentInChildren<CharacterStats>().TakeDamage(damage);
             _spawnManager.PlayerList[0].GetComponent<CharacterUIHandler>().UpdateHealthBar();
         }
     }
