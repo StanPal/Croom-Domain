@@ -33,6 +33,11 @@ public class WarriorSkills : MonoBehaviourPun
         this.photonView.RPC("PunShieldSkill", RpcTarget.All);
     }
 
+    public void OnJumpAttack()
+    {
+        this.photonView.RPC("PunJumpAttackTrigger", RpcTarget.All);
+    }
+
     [PunRPC]
     private void PunDeActivateShield()
     {
@@ -48,6 +53,12 @@ public class WarriorSkills : MonoBehaviourPun
         _characterStats.CombatState = CombatState.Defending;
         _characterStats.Shield = true;
         _animator.SetBool("IsShielding", true);
+        _characterUIHandler.ActionQueueCall();
+    }
+
+    private void PunJumpAttackSkill()
+    {
+        _animator.SetTrigger("JumpAttackTrigger");
         _characterUIHandler.ActionQueueCall();
     }
 }

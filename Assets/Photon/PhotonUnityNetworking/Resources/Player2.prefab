@@ -1745,7 +1745,7 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 9
-    SynchronizeType: 1
+    SynchronizeType: 0
     Name: ShotTrigger
   m_SynchronizeLayers:
   - SynchronizeType: 0

@@ -269,11 +269,14 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 9
-    SynchronizeType: 1
+    SynchronizeType: 0
     Name: SlashTrigger
   - Type: 4
     SynchronizeType: 1
     Name: IsShielding
+  - Type: 9
+    SynchronizeType: 0
+    Name: JumpAttackTrigger
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0

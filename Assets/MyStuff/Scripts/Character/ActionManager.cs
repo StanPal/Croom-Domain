@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class ActionManager : MonoBehaviour
 {
-    private void Start()
-    {
-        
-    }
-
     public void ResetSkillBehaviours(GameObject player, CharacterClass classType)
     {
         switch (classType)

@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 {
     public GameObject playerPrefab; 
     private SpawnManager _spawnManager;
-    private BattleManager _battleManager;
+    private TurnManager _TurnManager;
     public static GameManager Instance;
     private int playercount;
     [SerializeField] private Transform p1Pos;
@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        _battleManager = FindObjectOfType<BattleManager>();
+        _TurnManager = FindObjectOfType<TurnManager>();
         _spawnManager = FindObjectOfType<SpawnManager>();
     }
 

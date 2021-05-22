@@ -14,8 +14,8 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
     private ActionManager _actionManager;
     private Model _model;
     private CharacterStats _characterStats;
-    private BattleUI _battleUI;
-    private BattleManager _battleManager;
+    private BattleManager _BattleManager;
+    private TurnManager _TurnManager;
 
     private bool _canMove = false;
     private bool _canAttack = false;
@@ -39,10 +39,10 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
     {
         _actionManager = FindObjectOfType<ActionManager>();   
         _animator = GetComponent<Animator>();
-        _battleUI = FindObjectOfType<BattleUI>();
+        _BattleManager = FindObjectOfType<BattleManager>();
         _spawnManager = ServiceLocator.Get<SpawnManager>();
         _characterStats = GetComponent<CharacterStats>();
-        _battleManager = FindObjectOfType<BattleManager>();
+        _TurnManager = FindObjectOfType<TurnManager>();
     }
 
     void Start()
@@ -119,7 +119,7 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
             _animator.SetTrigger("SlashTrigger");
 
         }
-        _battleUI.PunAttackOtherPlayer(this.gameObject);
+        _BattleManager.PunAttackOtherPlayer(this.gameObject);
         Invoke("ResetSkill",0.5f);
         ActionQueueCall();
     }
@@ -135,22 +135,22 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
     public void ActionQueueCall()
     {
         _canMove = false;        
-        if (_battleManager.ActionQueue.Count > 0)
+        if (_TurnManager.ActionQueue.Count > 0)
         {
-            _battleManager.ActionQueue.Dequeue();
+            _TurnManager.ActionQueue.Dequeue();
         }
-        Debug.Log("Current Queue Count: " + _battleManager.ActionQueue.Count);
-        if (_battleManager.ActionQueue.Count == 0)
+        Debug.Log("Current Queue Count: " + _TurnManager.ActionQueue.Count);
+        if (_TurnManager.ActionQueue.Count == 0)
         {
-            _battleManager.State = BattleState.Start;
+            _TurnManager.State = BattleState.Start;
         }
-        else if (_battleManager.State == BattleState.EnemyTurn)
+        else if (_TurnManager.State == BattleState.EnemyTurn)
         {
-            _battleManager.State = BattleState.PlayerTurn;
+            _TurnManager.State = BattleState.PlayerTurn;
         }
-        else if (_battleManager.State == BattleState.PlayerTurn)
+        else if (_TurnManager.State == BattleState.PlayerTurn)
         {
-            _battleManager.State = BattleState.EnemyTurn;
+            _TurnManager.State = BattleState.EnemyTurn;
         }
     }
 
