@@ -28,12 +28,12 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable, IPunInstantiateM
         if(photonView.IsMine)
         {
             Enemy.localPlayerInstance = this.gameObject;
-        }
-        DontDestroyOnLoad(this.gameObject);
+        }  
     }
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
+        _spawnManager.EnemyList.Clear();
         _spawnManager.EnemyList.Add(this.gameObject);
         this.photonView.RPC("RotateModel", RpcTarget.All);
     }

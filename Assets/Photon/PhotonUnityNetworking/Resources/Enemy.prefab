@@ -273,6 +273,7 @@ GameObject:
   - component: {fileID: 8426861309795900641}
   - component: {fileID: -528278996552924949}
   - component: {fileID: 590257299535109677}
+  - component: {fileID: -6574525857140807001}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -331,7 +332,9 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 8426861309795900641}
+  - {fileID: -6574525857140807001}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -354,6 +357,27 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-6574525857140807001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8426861309795900642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 9
+    SynchronizeType: 0
+    Name: CastTrigger
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
 --- !u!1 &9121206352877225436
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
+        PhotonNetwork.AutomaticallySyncScene = true;
         _TurnManager = FindObjectOfType<TurnManager>();
         _spawnManager = FindObjectOfType<SpawnManager>();
     }
@@ -32,11 +33,11 @@ public class GameManager : MonoBehaviourPunCallbacks
             {
                 PhotonNetwork.Instantiate("Enemy", p3Pos.position, Quaternion.identity);
             }
-            if(playercount == 2 && !PhotonNetwork.IsMasterClient)
+            if(playercount == 2)
             {
                 PhotonNetwork.Instantiate("Player1", p1Pos.position, Quaternion.identity);
             }
-            if (playercount == 3 && !PhotonNetwork.IsMasterClient)
+            if (playercount == 3)
             {
                 PhotonNetwork.Instantiate("Player2", p2Pos.position, Quaternion.identity);
             }
