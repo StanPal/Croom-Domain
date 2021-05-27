@@ -38,6 +38,10 @@ public class ActionManager : MonoBehaviour
                 }
                 break;
             case CharacterClass.Archer:
+                if(player.TryGetComponent<ArcherSkills>(out ArcherSkills archer))
+                {
+                    archer.OnDeactiveHide();
+                }
                 break;
             case CharacterClass.Mage:
                 break;

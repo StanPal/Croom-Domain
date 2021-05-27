@@ -108,22 +108,6 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
         _actionManager.ResetSkillBehaviours(this.gameObject, _characterStats.ClassType); 
     }
 
-    //[PunRPC]
-    //private void TakeDamage()
-    //{
-    //    if (_characterStats.ClassType == CharacterClass.Archer)
-    //    {
-    //        _animator.SetTrigger("ShotTrigger");
-    //    }
-    //    else if (_characterStats.ClassType == CharacterClass.Warrior)
-    //    {
-    //        _animator.SetTrigger("SlashTrigger");
-
-    //    }
-    //    _BattleManager.PunAttackOtherPlayer(this.gameObject, _characterStats.Attack);        
-    //    ActionQueueCall();
-    //}
-
     public void ResetActionButtons()
     {
         for (int i = 0; i < _actionButtonlist.Count; i++)
@@ -134,7 +118,7 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
 
     public void ActionQueueCall()
     {
-        _canMove = false;        
+        _canMove = false;
         if (_TurnManager.ActionQueue.Count > 0)
         {
             _TurnManager.ActionQueue.Dequeue();

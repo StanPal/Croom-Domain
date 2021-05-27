@@ -1,20 +1,6 @@
 using Photon.Pun;
 using UnityEngine;
 
-public enum CharacterClass
-{
-    Warrior,
-    Archer,
-    Mage
-}
-
-public enum CombatState
-{
-    None,
-    Attacking,
-    Defending
-}
-
 public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunInstantiateMagicCallback
 {
     public static GameObject localPlayerInstance; 
@@ -29,9 +15,11 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     [SerializeField] private int _characterID = 0;
     [SerializeField] private CharacterClass _class = CharacterClass.Warrior;
     [SerializeField] private CombatState _combatState = CombatState.None;
+    [SerializeField] private StanceState _stanceStace = StanceState.None;
 
     private float _characterMaxHealth;
-    private bool _isShielding; 
+    private bool _isShielding;
+    private int _stunTimer = 1; 
 
     public float Speed { get => _characterSpeed; }
     public string PlayerName { get => _characterName; }
@@ -42,8 +30,9 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     public CharacterUIHandler CharacterUIHandler { get => _characterUIHandler; }
     public CharacterClass ClassType { get => _class; } 
     public CombatState CombatState { get => _combatState; set => _combatState = value; }
+    public StanceState StanceState { get => _stanceStace; set => _stanceStace = value; }
     public bool Shield { get => _isShielding; set => _isShielding = value; }
-
+    public int StunTimer { get => _stunTimer; set => _stunTimer = value; }
     private void Awake()
     {
         _spawnManager = FindObjectOfType<SpawnManager>();
@@ -69,10 +58,23 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     
     public void TakeDamage(float damage)
     {   
-        if(_isShielding)
+        if(_stanceStace == StanceState.Shielding)
         {
             _combatState = CombatState.None;
+            _stanceStace = StanceState.None;
           _characterHealth -= (damage * 0.5f);
+        }
+        else if (_stanceStace == StanceState.Hiding)
+        {
+            int hitChance = 1;
+            hitChance *= Random.Range(0, 100);
+            if(hitChance > 50)
+            {
+                _characterAttack -= damage;
+            }
+            Debug.Log(hitChance);
+            _combatState = CombatState.None;
+            _stanceStace = StanceState.None;
         }
         else
         {
@@ -81,9 +83,24 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
         Debug.Log(_characterName + " HP: " + _characterHealth);
     }
 
+    public void OnStatusEffect(NegativeStatusEffect negativeStatus)
+    {
+        switch (negativeStatus)
+        {
+            case NegativeStatusEffect.None:
+                break;
+            case NegativeStatusEffect.Stunned:
+                _stunTimer = 1;
+                break;
+            case NegativeStatusEffect.Burning:
+                break;
+            default:
+                break;
+        }
+    }
+
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
-       // info.Sender.TagObject = this.gameObject;
        _spawnManager.PlayerList.Add(this.gameObject);  
         this.photonView.RPC("rotateModel", RpcTarget.All);
     }

@@ -430,6 +430,7 @@ MonoBehaviour:
   _characterID: 1
   _class: 0
   _combatState: 0
+  _stanceStace: 0
 --- !u!114 &814059389877506772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -448,6 +449,7 @@ MonoBehaviour:
   _actionButtonlist:
   - {fileID: 6334160568236693602}
   - {fileID: 6324903056018286993}
+  - {fileID: 483969278551604264}
 --- !u!95 &8614971123444965748
 Animator:
   serializedVersion: 3

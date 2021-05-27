@@ -63,7 +63,7 @@ public class WarriorSkills : MonoBehaviourPun
     private void PunNormalAttack()
     {
         _animator.SetTrigger("SlashTrigger");
-        _battleManager.PunAttackOtherPlayer(this.gameObject, _characterStats.Attack);
+        _battleManager.PunAttackOtherPlayer(this.gameObject, _characterStats.Attack, NegativeStatusEffect.None);
         _skillCooldown--;
         CheckCoolDownFinished();
         _characterUIHandler.ActionQueueCall();
@@ -72,7 +72,6 @@ public class WarriorSkills : MonoBehaviourPun
     [PunRPC]
     private void PunDeActivateShield()
     {
-        _characterStats.Shield = false;
         _characterStats.CombatState = CombatState.Attacking;
         _animator.SetBool("IsShielding", false);
     }
@@ -84,7 +83,6 @@ public class WarriorSkills : MonoBehaviourPun
         _characterStats.CombatState = CombatState.Defending;
         _skillCooldown--;
         CheckCoolDownFinished();
-        _characterStats.Shield = true;
         _animator.SetBool("IsShielding", true);
         _characterUIHandler.ActionQueueCall();
     }
@@ -95,7 +93,7 @@ public class WarriorSkills : MonoBehaviourPun
         _skillCooldown = _maxCooldown;
         _animator.SetTrigger("JumpAttackTrigger");
         _skyAttackButton.interactable = false;
-        _battleManager.PunAttackOtherPlayer(this.gameObject, _characterStats.Attack * 1.5f);
+        _battleManager.PunAttackOtherPlayer(this.gameObject, _characterStats.Attack * 1.5f, NegativeStatusEffect.None);
         _characterUIHandler.ActionQueueCall();
     }
 }
