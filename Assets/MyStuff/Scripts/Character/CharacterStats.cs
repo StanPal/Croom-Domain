@@ -108,14 +108,16 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     [PunRPC]
     private void rotateModel()
     {
-        if(ClassType == CharacterClass.Warrior)
-        {
-            transform.rotation = Quaternion.Euler(0f, 90f, 0f);
-        }
-        else
-        {
-            transform.rotation = Quaternion.Euler(0f, -45f, 0f);
-        }
+        transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+
+        //if (ClassType == CharacterClass.Warrior)
+        //{
+        //    transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+        //}
+        //else
+        //{
+        //    transform.rotation = Quaternion.Euler(0f, -45f, 0f);
+        //}
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

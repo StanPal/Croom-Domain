@@ -9,6 +9,7 @@ public class SpawnManager : MonoBehaviourPun
     [SerializeField] private Transform _player2Pos;
     public List<GameObject> PlayerList;
     public List<GameObject> PlayerModelList;
+    public List<GameObject> EnemyList;
     public List<Transform> spawnPositions;
     public Transform Player1Pos { get => _player1Pos; }
     public Transform Player2Pos { get => _player2Pos; }

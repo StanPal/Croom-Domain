@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     private int playercount;
     [SerializeField] private Transform p1Pos;
     [SerializeField] private Transform p2Pos;
+    [SerializeField] private Transform p3Pos;
 
     private void Awake()
     {
@@ -27,11 +28,15 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (CharacterStats.localPlayerInstance == null)
         {
             Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
-            if (PhotonNetwork.IsMasterClient)
+            if (PhotonNetwork.IsMasterClient && playercount == 1)
+            {
+                PhotonNetwork.Instantiate("Enemy", p3Pos.position, Quaternion.identity);
+            }
+            if(playercount == 2 && !PhotonNetwork.IsMasterClient)
             {
                 PhotonNetwork.Instantiate("Player1", p1Pos.position, Quaternion.identity);
             }
-            else
+            if (playercount == 3 && !PhotonNetwork.IsMasterClient)
             {
                 PhotonNetwork.Instantiate("Player2", p2Pos.position, Quaternion.identity);
             }
@@ -84,7 +89,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             Debug.LogError("PhotonNetwork : Trying to Load a level but we are not the master Client");
         }
-        PhotonNetwork.LoadLevel("Room for " + 1);
+        PhotonNetwork.LoadLevel("Room Battle");
     }
 
 }

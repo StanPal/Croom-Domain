@@ -6,7 +6,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 {
     [SerializeField] private GameObject _controlPanel;
     [SerializeField] private GameObject _progressLabel; 
-    [SerializeField] private byte _maxPlayerPerRoom = 2;
+    [SerializeField] private byte _maxPlayerPerRoom = 3;
     private bool _isConnecting;
 
     private void Awake()
@@ -50,8 +50,8 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         if(PhotonNetwork.CurrentRoom.PlayerCount == 1)
         {
-            Debug.Log("Load Room for 1");
-            PhotonNetwork.LoadLevel("Room for 1");
+            Debug.Log("Room Battle");
+            PhotonNetwork.LoadLevel("Room Battle");
         }
         Debug.Log("Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
     }

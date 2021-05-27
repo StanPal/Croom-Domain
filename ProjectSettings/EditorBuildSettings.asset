@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/MyStuff/Scenes/Room for 2.unity
     guid: 24aad0abc074ff44db38b5c85a91af64
+  - enabled: 1
+    path: Assets/MyStuff/Scenes/Room Battle.unity
+    guid: b71f565c1f99f4b488af7571b6c7c7bc
   m_configObjects: {}

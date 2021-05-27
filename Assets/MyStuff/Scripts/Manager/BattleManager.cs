@@ -23,7 +23,7 @@ public class BattleManager : MonoBehaviourPun
     private void Initialize()
     {
         _spawnManager = ServiceLocator.Get<SpawnManager>();
-        _TurnManager = ServiceLocator.Get<TurnManager>();
+        _TurnManager = FindObjectOfType<TurnManager>();
     }
 
     [PunRPC]
