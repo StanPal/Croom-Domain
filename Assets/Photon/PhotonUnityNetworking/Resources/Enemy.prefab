@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2757093631139998612}
   m_Layer: 5
-  m_Name: PlayerOneBar
+  m_Name: EnemyBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49,7 +49,7 @@ GameObject:
   - component: {fileID: 2757093631191490877}
   - component: {fileID: 2757093631191490876}
   m_Layer: 5
-  m_Name: PlayerOne_Name
+  m_Name: Enemy_Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 2757093631855605268}
   - component: {fileID: 2757093631855605270}
   m_Layer: 5
-  m_Name: PlayerPanel
+  m_Name: EnemyPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -270,7 +270,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8426861309795900643}
-  - component: {fileID: 8426861309795900641}
+  - component: {fileID: 1739738052667783899}
+  - component: {fileID: 2556583500497554419}
   - component: {fileID: -528278996552924949}
   - component: {fileID: 590257299535109677}
   - component: {fileID: -6574525857140807001}
@@ -297,7 +298,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8426861309795900641
+--- !u!114 &1739738052667783899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8426861309795900642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd30d6fefb9005c418beb0c5b621c446, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _healthbar: {fileID: 9121206354390493234}
+--- !u!114 &2556583500497554419
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -311,9 +325,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyName: NightShade
   _enemyHealth: 200
-  _enemyAttack: 5
-  _enemySpeed: 2
-  _enemyLevel: 1
+  _enemyAttack: 3
+  _enemySpeed: 6
+  _enemyLevel: 0
 --- !u!114 &-528278996552924949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -333,7 +347,8 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 8426861309795900641}
+  - {fileID: 1739738052667783899}
+  - {fileID: 2556583500497554419}
   - {fileID: -6574525857140807001}
   sceneViewId: 0
   InstantiationId: 0
@@ -539,7 +554,7 @@ GameObject:
   - component: {fileID: 9121206354390493235}
   - component: {fileID: 9121206354390493234}
   m_Layer: 5
-  m_Name: PlayerOneHealthBar
+  m_Name: EnemyHealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -611,9 +626,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 200
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 200
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

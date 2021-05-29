@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable, IPunInstantiateM
     [SerializeField] private int _enemyLevel;
 
     private float _enemyMaxHealth;
-
+    private int _stunTimer;
     public float Speed { get => _enemySpeed; }
     public string PlayerName { get => _enemyName; }
     public float MaxHealth { get => _enemyMaxHealth; }
@@ -25,10 +25,41 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable, IPunInstantiateM
     private void Awake()
     {
         _spawnManager = FindObjectOfType<SpawnManager>();
+        _enemyMaxHealth = _enemyHealth;
         if(photonView.IsMine)
         {
             Enemy.localPlayerInstance = this.gameObject;
-        }  
+        }
+        DontDestroyOnLoad(this.gameObject);
+    }
+
+    private void Update()
+    {
+        if(CurrentHealth <= 0f)
+        {
+            this.gameObject.SetActive(false);
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        _enemyHealth -= damage;
+    }
+
+    public void OnStatusEffect(NegativeStatusEffect negativeStatus)
+    {
+        switch (negativeStatus)
+        {
+            case NegativeStatusEffect.None:
+                break;
+            case NegativeStatusEffect.Stunned:
+                _stunTimer = 1;
+                break;
+            case NegativeStatusEffect.Burning:
+                break;
+            default:
+                break;
+        }
     }
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
@@ -47,6 +78,14 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable, IPunInstantiateM
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        throw new System.NotImplementedException();
+        if (stream.IsWriting)
+        {
+            stream.SendNext(CurrentHealth);
+        }
+        else
+        {
+            //We are reading input to our health and write it back to our client and synced across the network
+            this._enemyHealth = (float)stream.ReceiveNext();
+        }
     }
 }

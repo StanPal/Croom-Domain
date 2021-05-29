@@ -26,13 +26,19 @@ public class GameManager : MonoBehaviourPunCallbacks
         Instance = this;
         playercount = PhotonNetwork.CountOfPlayers;
         
-        if (CharacterStats.localPlayerInstance == null)
+        if (Enemy.localPlayerInstance == null)
         {
-            Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
+            Debug.LogFormat("We are Instantiating Master Client Player from {0}", SceneManagerHelper.ActiveSceneName);
             if (PhotonNetwork.IsMasterClient && playercount == 1)
             {
                 PhotonNetwork.Instantiate("Enemy", p3Pos.position, Quaternion.identity);
             }
+        }
+
+        if (CharacterStats.localPlayerInstance == null)
+        {
+            Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
+  
             if(playercount == 2)
             {
                 PhotonNetwork.Instantiate("Player1", p1Pos.position, Quaternion.identity);

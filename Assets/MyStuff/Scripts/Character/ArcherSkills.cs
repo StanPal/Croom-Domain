@@ -49,6 +49,7 @@ public class ArcherSkills : MonoBehaviourPun
     [PunRPC]
     private void PunNormalAttack()
     {
+        PunDeActivateHide();
         _animator.SetTrigger("ShotTrigger");
         _battleManager.PunAttackOtherPlayer(this.gameObject, _characterStats.Attack, NegativeStatusEffect.None);
         _characterUIHandler.ActionQueueCall();
@@ -74,6 +75,7 @@ public class ArcherSkills : MonoBehaviourPun
     [PunRPC]
     private void PunKickSkill()
     {
+        PunDeActivateHide();
         _animator.SetTrigger("KickTrigger");
         _battleManager.PunAttackOtherPlayer(this.gameObject, _characterStats.Attack, NegativeStatusEffect.Stunned);
         _characterUIHandler.ActionQueueCall();

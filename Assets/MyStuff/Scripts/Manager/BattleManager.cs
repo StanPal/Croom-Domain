@@ -31,15 +31,31 @@ public class BattleManager : MonoBehaviourPun
     {
         if (_spawnManager.PlayerList[0] == player)
         {
-            _spawnManager.PlayerList[1].GetComponentInChildren<CharacterStats>().TakeDamage(damage);
-            _spawnManager.PlayerList[1].GetComponentInChildren<CharacterStats>().OnStatusEffect(negativeStatus);
-            _spawnManager.PlayerList[1].GetComponent<CharacterUIHandler>().UpdateHealthBar();
+            _spawnManager.EnemyList[0].GetComponent<Enemy>().TakeDamage(damage);
+            _spawnManager.EnemyList[0].GetComponent<EnemyUIHandler>().UpdateHealthBar();
+            _spawnManager.EnemyList[0].GetComponent<Enemy>().OnStatusEffect(negativeStatus);
 
         }
         else
         {
-            _spawnManager.PlayerList[0].GetComponentInChildren<CharacterStats>().TakeDamage(damage);
-            _spawnManager.PlayerList[0].GetComponent<CharacterUIHandler>().UpdateHealthBar();
+            _spawnManager.EnemyList[0].GetComponent<Enemy>().TakeDamage(damage);
+            _spawnManager.EnemyList[0].GetComponent<EnemyUIHandler>().UpdateHealthBar();
+            _spawnManager.EnemyList[0].GetComponent<Enemy>().OnStatusEffect(negativeStatus);
         }
+
+        //if (_spawnManager.PlayerList[0] == player)
+        //{
+        //    _spawnManager.PlayerList[1].GetComponentInChildren<CharacterStats>().TakeDamage(damage);
+        //    _spawnManager.PlayerList[1].GetComponentInChildren<CharacterStats>().OnStatusEffect(negativeStatus);
+        //    _spawnManager.PlayerList[1].GetComponent<CharacterUIHandler>().UpdateHealthBar();
+
+        //}
+        //else
+        //{
+        //    _spawnManager.PlayerList[0].GetComponentInChildren<CharacterStats>().TakeDamage(damage);
+        //    _spawnManager.PlayerList[0].GetComponent<CharacterUIHandler>().UpdateHealthBar();
+        //}
     }
+
+
 }

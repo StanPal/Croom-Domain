@@ -62,6 +62,7 @@ public class WarriorSkills : MonoBehaviourPun
     [PunRPC]
     private void PunNormalAttack()
     {
+        PunDeActivateShield();
         _animator.SetTrigger("SlashTrigger");
         _battleManager.PunAttackOtherPlayer(this.gameObject, _characterStats.Attack, NegativeStatusEffect.None);
         _skillCooldown--;
@@ -90,6 +91,7 @@ public class WarriorSkills : MonoBehaviourPun
     [PunRPC]
     private void PunSkyAttackSkill()
     {
+        PunDeActivateShield();
         _skillCooldown = _maxCooldown;
         _animator.SetTrigger("JumpAttackTrigger");
         _skyAttackButton.interactable = false;

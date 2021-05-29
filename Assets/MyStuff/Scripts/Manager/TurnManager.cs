@@ -21,6 +21,7 @@ public class TurnManager : MonoBehaviourPun
     private SpawnManager _spawnManager;
     private CharacterStats _player1;
     private CharacterStats _player2;
+    private Enemy _enemy1;
     public BattleState State { get => _state; set => _state = value; }
     public Queue<CharacterStats> ActionQueue { get => _actionQueue; }
 
@@ -74,11 +75,11 @@ public class TurnManager : MonoBehaviourPun
 
     private void SetUpPhase()
     {
-
         if(_spawnManager.PlayerList.Count >= minCharacterCount)
         {
             _player1 = _spawnManager.PlayerList[0].GetComponentInChildren<CharacterStats>();
             _player2 = _spawnManager.PlayerList[1].GetComponentInChildren<CharacterStats>();
+            _enemy1 = _spawnManager.EnemyList[0].GetComponent<Enemy>();
             _state = BattleState.Start;
         }
     }
@@ -105,7 +106,6 @@ public class TurnManager : MonoBehaviourPun
         {
             characterUI.OnMove(); 
         }
-
     }
 
     private void EnemyTurn()

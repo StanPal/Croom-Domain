@@ -7,7 +7,6 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     private SpawnManager _spawnManager;
     private CharacterUIHandler _characterUIHandler;
     
-
     [SerializeField] private string _characterName;
     [SerializeField] private float _characterHealth = 100;
     [SerializeField] private float _characterAttack = 10;
@@ -101,6 +100,7 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
+        
        _spawnManager.PlayerList.Add(this.gameObject);  
         this.photonView.RPC("rotateModel", RpcTarget.All);
     }
@@ -108,16 +108,10 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     [PunRPC]
     private void rotateModel()
     {
-        transform.rotation = Quaternion.Euler(0f, 90f, 0f);
-
-        //if (ClassType == CharacterClass.Warrior)
-        //{
-        //    transform.rotation = Quaternion.Euler(0f, 90f, 0f);
-        //}
-        //else
-        //{
-        //    transform.rotation = Quaternion.Euler(0f, -45f, 0f);
-        //}
+        if (_spawnManager.PlayerList.Count > 0)
+        {
+            transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+        }
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
