@@ -14,11 +14,17 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] private Transform p2Pos;
     [SerializeField] private Transform p3Pos;
 
+    public Transform P1Pos { get => p1Pos; }
+    public Transform P2Pos { get => p2Pos; }
+    public Transform P3Pos { get => p3Pos; }
+
+
     private void Awake()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
         _TurnManager = FindObjectOfType<TurnManager>();
         _spawnManager = FindObjectOfType<SpawnManager>();
+
     }
 
     private void Start()

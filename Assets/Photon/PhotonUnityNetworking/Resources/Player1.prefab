@@ -493,6 +493,9 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 0
     Name: JumpAttackTrigger
+  - Type: 4
+    SynchronizeType: 2
+    Name: IsWalking
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0

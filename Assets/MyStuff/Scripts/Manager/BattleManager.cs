@@ -11,9 +11,10 @@ public class BattleManager : MonoBehaviourPun
     [SerializeField] private Slider _PlayerTwoHealthBar;
 
     private SpawnManager _spawnManager;
-
+    private GameManager _gameManager;
     private GameObject player1;
     private GameObject player2;
+    private bool _isMoving;
 
     private void Awake()
     {
@@ -24,6 +25,12 @@ public class BattleManager : MonoBehaviourPun
     {
         _spawnManager = ServiceLocator.Get<SpawnManager>();
         _TurnManager = FindObjectOfType<TurnManager>();
+        _gameManager = FindObjectOfType<GameManager>();
+    }
+
+    private void Update()
+    {
+        
     }
 
     [PunRPC]
