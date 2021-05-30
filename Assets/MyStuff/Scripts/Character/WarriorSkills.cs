@@ -14,8 +14,10 @@ public class WarriorSkills : MonoBehaviourPun
     private int _maxCooldown;
     private bool _finishedWalking;
     private bool _isSwinging;
+    private Vector3 _startPos;
     private Vector3 _enemyPos;
     private Vector3 _offSetPos = new Vector3 ( 5f, 0f, 0f );
+    [SerializeField] private float _timeOffset = 0.7f;
     [SerializeField] private int _skillCooldown = 2;
     [SerializeField] private Button _guardButton;
     [SerializeField] private Button _skyAttackButton;
@@ -36,6 +38,7 @@ public class WarriorSkills : MonoBehaviourPun
         _gameManager = FindObjectOfType<GameManager>();
         _maxCooldown = _skillCooldown;
         _enemyPos = _gameManager.P3Pos.position;
+        _startPos = transform.position;
     }
 
     public void OnDeactivateGuard()
@@ -78,24 +81,40 @@ public class WarriorSkills : MonoBehaviourPun
     [PunRPC]
     public void PunSwing()
     {
-        _animator.SetBool("IsWalking", false);
+        _isSwinging = false;
         _animator.SetTrigger("SlashTrigger");
         _battleManager.PunAttackOtherPlayer(this.gameObject, _characterStats.Attack, NegativeStatusEffect.None);
+        StartCoroutine(PlayAnim());
+        //PunMoveBackToPos();
         _skillCooldown--;
         CheckCoolDownFinished();
         _characterUIHandler.ActionQueueCall();
     }
 
+    private IEnumerator PlayAnim()
+    {
+        Debug.Log(_animator.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length + _timeOffset);
+        _animator.SetBool("IsWalking", true);
+        PunMoveBackToPos();
+    }
+
+    [PunRPC] void PunMoveBackToPos()
+    {
+        StartCoroutine(SmoothLerp(3f, transform.position, _startPos, Vector3.zero));
+        _finishedWalking = true;
+    }
+
     [PunRPC]
     public void PunMoveToTarget()
     {
-        StartCoroutine(SmoothLerp(3f));
+        StartCoroutine(SmoothLerp(3f, _startPos, _enemyPos, _offSetPos));
     }
 
-    private IEnumerator SmoothLerp(float time)
+    private IEnumerator SmoothLerp(float time, Vector3 starting, Vector3 Target, Vector3 offset)
     {
-        Vector3 startingPos = transform.position;
-        Vector3 finalPos = _enemyPos - _offSetPos;
+        Vector3 startingPos = starting;
+        Vector3 finalPos = Target - offset;
 
         float elapsedTime = 0;
 
@@ -105,10 +124,15 @@ public class WarriorSkills : MonoBehaviourPun
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        _finishedWalking = true;
+  
         if(_isSwinging)
         {
+            _animator.SetBool("IsWalking", false);
             PunSwing();
+        }
+        if (_finishedWalking)
+        {
+            _animator.SetBool("IsWalking", false);
         }
     }
 
