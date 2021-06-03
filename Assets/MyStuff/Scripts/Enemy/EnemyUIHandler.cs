@@ -10,6 +10,10 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
     private Enemy _enemy;
     private Animator _animator;
     private bool _canAttack;
+    private TurnManager _TurnManager;
+    private ActionManager _actionManager;
+    private BattleManager _battleManager;
+
     private void Awake()
     {
         GameLoader.CallOnComplete(Initialize);
@@ -19,8 +23,9 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
     private void Initialize()
     {        
         _animator = GetComponent<Animator>();
-        //_BattleManager = FindObjectOfType<BattleManager>();
+        _battleManager = FindObjectOfType<BattleManager>();
         //_spawnManager = ServiceLocator.Get<SpawnManager>();
+        _TurnManager = FindObjectOfType<TurnManager>();
         _enemy = GetComponent<Enemy>();
     }
 
@@ -38,6 +43,21 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
     public void UpdateHealthBar()
     {
         _healthbar.value = _enemy.CurrentHealth;
+    }
+
+    public void OnAttack()
+    {
+        _battleManager.EnemyAttackPlayer(_enemy.Attack);
+        ActionQueueCall();
+    }
+
+    public void ActionQueueCall()
+    { 
+        if (_TurnManager.ActionQueue.Count > 0)
+        {
+            _TurnManager.ActionQueue.Dequeue();
+        }
+        _TurnManager.State = BattleState.TransitionPhase;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

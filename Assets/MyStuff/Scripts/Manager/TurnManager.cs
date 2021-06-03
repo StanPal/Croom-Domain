@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum BattleState {SetupStage, Start, PlayerTurn, EnemyTurn, Won, Lost}
+public enum BattleState {SetupStage, Start, PlayerTurn, TransitionPhase, EnemyTurn, Won, Lost}
 
 public class TurnManager : MonoBehaviourPun
 {
@@ -55,6 +55,9 @@ public class TurnManager : MonoBehaviourPun
             case BattleState.PlayerTurn:
                 PlayerTurn();
                 break;
+            case BattleState.TransitionPhase:
+                TransitionPhase();
+                break;
             case BattleState.EnemyTurn:
                 EnemyTurn();
                 break;
@@ -86,21 +89,74 @@ public class TurnManager : MonoBehaviourPun
 
     private void SetUpTurnQueue()
     {
-        if(_player1.Speed > _player2.Speed)
+        if(_player1.Speed > _player2.Speed && _player1.Speed > _enemy1.Speed && _player2.Speed > _enemy1.Speed)
         {
             _actionQueue.Enqueue(_player1.gameObject);
             _actionQueue.Enqueue(_player2.gameObject);
+            _actionQueue.Enqueue(_enemy1.gameObject);
+        }
+        else if (_player1.Speed > _player2.Speed && _player1.Speed > _enemy1.Speed && _enemy1.Speed > _player2.Speed)
+        {
+            _actionQueue.Enqueue(_player1.gameObject);
+            _actionQueue.Enqueue(_enemy1.gameObject);
+            _actionQueue.Enqueue(_player2.gameObject);
+        }
+        else if (_player2.Speed > _player1.Speed && _player2.Speed > _enemy1.Speed && _player1.Speed > _enemy1.Speed)
+        {
+            _actionQueue.Enqueue(_player2.gameObject);
+            _actionQueue.Enqueue(_player1.gameObject);
+            _actionQueue.Enqueue(_enemy1.gameObject);
+        }
+        else if (_player2.Speed > _player1.Speed && _player2.Speed > _enemy1.Speed && _player1.Speed < _enemy1.Speed)
+        {
+            _actionQueue.Enqueue(_player2.gameObject);
+            _actionQueue.Enqueue(_enemy1.gameObject);
+            _actionQueue.Enqueue(_player1.gameObject);
+        }
+        else if (_enemy1.Speed > _player1.Speed && _enemy1.Speed > _player2.Speed && _player1.Speed > _player2.Speed)
+        {
+            _actionQueue.Enqueue(_enemy1.gameObject);
+            _actionQueue.Enqueue(_player1.gameObject);
+            _actionQueue.Enqueue(_player2.gameObject);
+        }
+        else if (_enemy1.Speed > _player1.Speed && _enemy1.Speed > _player2.Speed && _player1.Speed < _player2.Speed)
+        {
+            _actionQueue.Enqueue(_enemy1.gameObject);
+            _actionQueue.Enqueue(_player2.gameObject);
+            _actionQueue.Enqueue(_player1.gameObject);
+        }
+
+
+        Debug.Log(_actionQueue.Count);
+        if (_actionQueue.Peek().TryGetComponent<EnemyUIHandler>(out EnemyUIHandler enemy))
+        {
+            _state = BattleState.EnemyTurn;
         }
         else
         {
-            _actionQueue.Enqueue(_player2.gameObject);
-            _actionQueue.Enqueue(_player1.gameObject);
+            _state = BattleState.PlayerTurn;
+
         }
-        Debug.Log(_actionQueue.Count);
-        _state = BattleState.PlayerTurn;
     }
 
-    private void PlayerTurn()
+    private void TransitionPhase()
+    {
+        if(_actionQueue.Count == 0)
+        {
+            _state = BattleState.Start;
+        }
+        else if (_actionQueue.Peek().TryGetComponent<EnemyUIHandler>(out EnemyUIHandler enemy))
+        {
+            _state = BattleState.EnemyTurn;
+        }
+        else
+        {
+            _state = BattleState.PlayerTurn;
+        }
+    }
+
+
+    public void PlayerTurn()
     {
         if(_actionQueue.Peek().TryGetComponent<CharacterUIHandler>(out CharacterUIHandler characterUI))
         {
@@ -110,9 +166,9 @@ public class TurnManager : MonoBehaviourPun
 
     private void EnemyTurn()
     {
-       if(_actionQueue.Peek().TryGetComponent<CharacterUIHandler>(out CharacterUIHandler characterUI))
+       if(_actionQueue.Peek().TryGetComponent<EnemyUIHandler>(out EnemyUIHandler enemyUI))
         {
-            characterUI.OnMove();
+            enemyUI.OnAttack();
         }
     }
 

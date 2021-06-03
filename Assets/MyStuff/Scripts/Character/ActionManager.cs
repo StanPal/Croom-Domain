@@ -27,6 +27,8 @@ public class ActionManager : MonoBehaviour
         }
     }
 
+    
+
     public void ResetSkillBehaviours(GameObject player, CharacterClass classType)
     {
         switch (classType)

@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable, IPunInstantiateM
 {
     public static GameObject localPlayerInstance;
     private SpawnManager _spawnManager;
+    private Animator _animator;
 
     [SerializeField] private string _enemyName;
     [SerializeField] private float _enemyHealth;
@@ -31,6 +32,7 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable, IPunInstantiateM
             Enemy.localPlayerInstance = this.gameObject;
         }
         DontDestroyOnLoad(this.gameObject);
+        _animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -44,6 +46,7 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable, IPunInstantiateM
     public void TakeDamage(float damage)
     {
         _enemyHealth -= damage;
+        _animator.SetTrigger("OnHitTrigger");
     }
 
     public void OnStatusEffect(NegativeStatusEffect negativeStatus)

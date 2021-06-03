@@ -390,6 +390,9 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 0
     Name: CastTrigger
+  - Type: 9
+    SynchronizeType: 0
+    Name: OnHitTrigger
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0

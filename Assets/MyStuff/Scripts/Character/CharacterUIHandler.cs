@@ -119,23 +119,14 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
     public void ActionQueueCall()
     {
         _canMove = false;
+        Debug.Log("Current Queue Count: " + _TurnManager.ActionQueue.Count);
+
         if (_TurnManager.ActionQueue.Count > 0)
         {
             _TurnManager.ActionQueue.Dequeue();
         }
-        Debug.Log("Current Queue Count: " + _TurnManager.ActionQueue.Count);
-        if (_TurnManager.ActionQueue.Count == 0)
-        {
-            _TurnManager.State = BattleState.Start;
-        }
-        else if (_TurnManager.State == BattleState.EnemyTurn)
-        {
-            _TurnManager.State = BattleState.PlayerTurn;
-        }
-        else if (_TurnManager.State == BattleState.PlayerTurn)
-        {
-            _TurnManager.State = BattleState.EnemyTurn;
-        }
+        _TurnManager.State = BattleState.TransitionPhase;
+        
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
