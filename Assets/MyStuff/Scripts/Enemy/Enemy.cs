@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable, IPunInstantiateM
     [SerializeField] private float _enemyAttack;
     [SerializeField] private float _enemySpeed;
     [SerializeField] private int _enemyLevel;
+    [SerializeField] private CharacterClass _class = CharacterClass.Mage;
 
     private float _enemyMaxHealth;
     private int _stunTimer;
@@ -22,6 +23,8 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable, IPunInstantiateM
     public float MaxHealth { get => _enemyMaxHealth; }
     public float CurrentHealth { get => _enemyHealth; set => _enemyHealth = value; }
     public float Attack { get => _enemyAttack; set => _enemyAttack = value; }
+    public CharacterClass ClassType { get => _class; }
+    
 
     private void Awake()
     {

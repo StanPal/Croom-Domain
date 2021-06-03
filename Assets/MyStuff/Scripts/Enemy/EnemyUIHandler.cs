@@ -25,6 +25,7 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
         _animator = GetComponent<Animator>();
         _battleManager = FindObjectOfType<BattleManager>();
         //_spawnManager = ServiceLocator.Get<SpawnManager>();
+        _actionManager = FindObjectOfType<ActionManager>();
         _TurnManager = FindObjectOfType<TurnManager>();
         _enemy = GetComponent<Enemy>();
     }
@@ -48,7 +49,9 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
     public void OnAttack()
     {
         _battleManager.EnemyAttackPlayer(_enemy.Attack);
+        _animator.SetTrigger("CastTrigger");
         ActionQueueCall();
+        //_actionManager.AttackPlayer(this.gameObject, _enemy.ClassType);
     }
 
     public void ActionQueueCall()

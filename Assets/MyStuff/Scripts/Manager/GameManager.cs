@@ -30,13 +30,12 @@ public class GameManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         Instance = this;
-        playercount = PhotonNetwork.CountOfPlayers;
         
         if (Enemy.localPlayerInstance == null)
-        {
-            Debug.LogFormat("We are Instantiating Master Client Player from {0}", SceneManagerHelper.ActiveSceneName);
-            if (PhotonNetwork.IsMasterClient && playercount == 1)
+        {         
+            if (PhotonNetwork.IsMasterClient && PhotonNetwork.CountOfPlayers == 1)
             {
+                Debug.LogFormat("We are Instantiating Master Client Player from {0}", SceneManagerHelper.ActiveSceneName);
                 PhotonNetwork.Instantiate("Enemy", p3Pos.position, Quaternion.identity);
             }
         }
@@ -45,11 +44,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
   
-            if(playercount == 2)
+            if(PhotonNetwork.CountOfPlayers == 2)
             {
                 PhotonNetwork.Instantiate("Player1", p1Pos.position, Quaternion.identity);
             }
-            if (playercount == 3)
+            if (PhotonNetwork.CountOfPlayers == 3)
             {
                 PhotonNetwork.Instantiate("Player2", p2Pos.position, Quaternion.identity);
             }

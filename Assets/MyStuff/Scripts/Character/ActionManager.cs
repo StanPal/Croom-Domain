@@ -26,8 +26,33 @@ public class ActionManager : MonoBehaviour
                 break;
         }
     }
-
     
+    public void AttackPlayer(GameObject player, CharacterClass classType)
+    {
+        switch (classType)
+        {
+            case CharacterClass.Warrior:
+                if (player.TryGetComponent<WarriorSkills>(out WarriorSkills warrior))
+                {
+                    warrior.OnNormalAttack();
+                }
+                break;
+            case CharacterClass.Archer:
+                if (player.TryGetComponent<ArcherSkills>(out ArcherSkills archer))
+                {
+                    archer.OnNormalAttack();
+                }
+                break;
+            case CharacterClass.Mage:
+                if (player.TryGetComponent<MageSkills>(out MageSkills mage))
+                {
+                    mage.OnNormalAttack();
+                }
+                break;
+            default:
+                break;
+        }
+    }
 
     public void ResetSkillBehaviours(GameObject player, CharacterClass classType)
     {

@@ -6,7 +6,8 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     public static GameObject localPlayerInstance; 
     private SpawnManager _spawnManager;
     private CharacterUIHandler _characterUIHandler;
-    
+    private Animator _animator;
+
     [SerializeField] private string _characterName;
     [SerializeField] private float _characterHealth = 100;
     [SerializeField] private float _characterAttack = 10;
@@ -32,9 +33,11 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     public StanceState StanceState { get => _stanceStace; set => _stanceStace = value; }
     public bool Shield { get => _isShielding; set => _isShielding = value; }
     public int StunTimer { get => _stunTimer; set => _stunTimer = value; }
+
     private void Awake()
     {
         _spawnManager = FindObjectOfType<SpawnManager>();
+        _animator = GetComponent<Animator>();
         _characterMaxHealth = _characterHealth;
         if(photonView.IsMine)
         {
@@ -78,6 +81,7 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
         else
         {
             _characterHealth -= damage;
+            _animator.SetTrigger("OnHitTrigger");
         }
         Debug.Log(_characterName + " HP: " + _characterHealth);
     }

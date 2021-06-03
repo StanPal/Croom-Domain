@@ -272,6 +272,7 @@ GameObject:
   - component: {fileID: 8426861309795900643}
   - component: {fileID: 1739738052667783899}
   - component: {fileID: 2556583500497554419}
+  - component: {fileID: 2469257752586942283}
   - component: {fileID: -528278996552924949}
   - component: {fileID: 590257299535109677}
   - component: {fileID: -6574525857140807001}
@@ -328,6 +329,20 @@ MonoBehaviour:
   _enemyAttack: 3
   _enemySpeed: 6
   _enemyLevel: 0
+  _class: 2
+--- !u!114 &2469257752586942283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8426861309795900642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0942676ba429e4f418c48aec2cb4c42c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _skillCooldown: 2
 --- !u!114 &-528278996552924949
 MonoBehaviour:
   m_ObjectHideFlags: 0

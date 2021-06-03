@@ -69,8 +69,6 @@ public class BattleManager : MonoBehaviourPun
     {
         int targetPlayer = Random.Range(0, _spawnManager.PlayerList.Count);
         _spawnManager.PlayerList[targetPlayer].GetComponent<CharacterStats>().TakeDamage(damage);
-        _spawnManager.PlayerList[targetPlayer].GetComponent<CharacterUIHandler>().UpdateHealthBar();
-
     }
 
 
