@@ -7,13 +7,13 @@ using UnityEngine.UI;
 public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
 {
     [SerializeField] private Slider _healthbar;
-    private Enemy _enemy;
+    private CharacterStats _enemy;
     private Animator _animator;
     private bool _canAttack;
+
     private void Awake()
     {
         GameLoader.CallOnComplete(Initialize);
-
     }
 
     private void Initialize()
@@ -21,7 +21,7 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
         _animator = GetComponent<Animator>();
         //_BattleManager = FindObjectOfType<BattleManager>();
         //_spawnManager = ServiceLocator.Get<SpawnManager>();
-        _enemy = GetComponent<Enemy>();
+        _enemy = GetComponent<CharacterStats>();
     }
 
 

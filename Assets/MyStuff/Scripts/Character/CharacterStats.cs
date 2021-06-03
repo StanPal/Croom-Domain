@@ -1,12 +1,13 @@
 using Photon.Pun;
 using UnityEngine;
 
-public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunInstantiateMagicCallback
+public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable
 {
     public static GameObject localPlayerInstance; 
     private SpawnManager _spawnManager;
     private CharacterUIHandler _characterUIHandler;
-    
+    private Animator _animator;
+
     [SerializeField] private string _characterName;
     [SerializeField] private float _characterHealth = 100;
     [SerializeField] private float _characterAttack = 10;
@@ -32,9 +33,11 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     public StanceState StanceState { get => _stanceStace; set => _stanceStace = value; }
     public bool Shield { get => _isShielding; set => _isShielding = value; }
     public int StunTimer { get => _stunTimer; set => _stunTimer = value; }
+
     private void Awake()
     {
         _spawnManager = FindObjectOfType<SpawnManager>();
+        _animator = GetComponent<Animator>();
         _characterMaxHealth = _characterHealth;
         if(photonView.IsMine)
         {
@@ -79,6 +82,7 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
         {
             _characterHealth -= damage;
         }
+        _animator.SetTrigger("OnHitTrigger");
         Debug.Log(_characterName + " HP: " + _characterHealth);
     }
 
@@ -95,22 +99,6 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
                 break;
             default:
                 break;
-        }
-    }
-
-    public void OnPhotonInstantiate(PhotonMessageInfo info)
-    {
-        
-       _spawnManager.PlayerList.Add(this.gameObject);  
-        this.photonView.RPC("rotateModel", RpcTarget.All);
-    }
-
-    [PunRPC]
-    private void rotateModel()
-    {
-        if (_spawnManager.PlayerList.Count > 0)
-        {
-            transform.rotation = Quaternion.Euler(0f, 90f, 0f);
         }
     }
 

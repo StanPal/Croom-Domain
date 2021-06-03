@@ -12,7 +12,7 @@ public class TurnManager : MonoBehaviourPun
     public System.Action OnDamage;
     [SerializeField] private BattleState _state;
     [SerializeField] private Queue<CharacterStats> _actionQueue;
-    [SerializeField] private int minCharacterCount = 2;
+    [SerializeField] private int minCharacterCount = 3;
     //public GameObject playerPrefab;
     //public GameObject enemyPrefab;
 
@@ -21,7 +21,7 @@ public class TurnManager : MonoBehaviourPun
     private SpawnManager _spawnManager;
     private CharacterStats _player1;
     private CharacterStats _player2;
-    private Enemy _enemy1;
+    private CharacterStats _enemy1;
     public BattleState State { get => _state; set => _state = value; }
     public Queue<CharacterStats> ActionQueue { get => _actionQueue; }
 
@@ -77,9 +77,9 @@ public class TurnManager : MonoBehaviourPun
     {
         if(_spawnManager.PlayerList.Count >= minCharacterCount)
         {
-            _player1 = _spawnManager.PlayerList[0].GetComponentInChildren<CharacterStats>();
-            _player2 = _spawnManager.PlayerList[1].GetComponentInChildren<CharacterStats>();
-            _enemy1 = _spawnManager.EnemyList[0].GetComponent<Enemy>();
+            _enemy1 = _spawnManager.PlayerList[0].GetComponent<CharacterStats>();
+            _player1 = _spawnManager.PlayerList[1].GetComponent<CharacterStats>();
+            _player2 = _spawnManager.PlayerList[2].GetComponent<CharacterStats>();
             _state = BattleState.Start;
         }
     }

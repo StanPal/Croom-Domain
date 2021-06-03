@@ -46,7 +46,7 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
     }
 
     void Start()
-    {
+    {        
         ResetActionButtons();
         ResetSkill();
         _healthbar.maxValue = _characterStats.MaxHealth;
@@ -80,9 +80,22 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
     public void OnMove()
     {
         _canMove = true;
-        if(_characterStats.CombatState == CombatState.None)
+        if (_characterStats.CombatState == CombatState.None)
         {
             ResetSkill();
+        }
+    }
+
+    [PunRPC]
+    public void ToggleMove()
+    {
+        if (!_canMove)
+        {
+            _canMove = true;
+        }
+        else
+        {
+            _canMove = false;
         }
     }
 
@@ -118,7 +131,6 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
 
     public void ActionQueueCall()
     {
-        _canMove = false;
         if (_TurnManager.ActionQueue.Count > 0)
         {
             _TurnManager.ActionQueue.Dequeue();
@@ -142,11 +154,11 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(_canAttack);
+            stream.SendNext(_canMove);
         }
         else
         {          
-            this._canAttack = (bool)stream.ReceiveNext();
+            this._canMove = (bool)stream.ReceiveNext();
         }
     }
 }

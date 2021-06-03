@@ -36,18 +36,18 @@ public class BattleManager : MonoBehaviourPun
     [PunRPC]
     public void PunAttackOtherPlayer(GameObject player, float damage, NegativeStatusEffect negativeStatus)
     {
-        if (_spawnManager.PlayerList[0] == player)
+        if (_spawnManager.PlayerList[1] == player)
         {
-            _spawnManager.EnemyList[0].GetComponent<Enemy>().TakeDamage(damage);
-            _spawnManager.EnemyList[0].GetComponent<EnemyUIHandler>().UpdateHealthBar();
-            _spawnManager.EnemyList[0].GetComponent<Enemy>().OnStatusEffect(negativeStatus);
+            _spawnManager.PlayerList[0].GetComponent<CharacterStats>().TakeDamage(damage);
+            _spawnManager.PlayerList[0].GetComponent<EnemyUIHandler>().UpdateHealthBar();
+            //_spawnManager.PlayerList[0].GetComponent<CharacterStats>().OnStatusEffect(negativeStatus);
 
         }
-        else
+        if (_spawnManager.PlayerList[2] == player)
         {
-            _spawnManager.EnemyList[0].GetComponent<Enemy>().TakeDamage(damage);
-            _spawnManager.EnemyList[0].GetComponent<EnemyUIHandler>().UpdateHealthBar();
-            _spawnManager.EnemyList[0].GetComponent<Enemy>().OnStatusEffect(negativeStatus);
+            _spawnManager.PlayerList[0].GetComponent<CharacterStats>().TakeDamage(damage);
+            _spawnManager.PlayerList[0].GetComponent<EnemyUIHandler>().UpdateHealthBar();
+            //_spawnManager.PlayerList[0].GetComponent<CharacterStats>().OnStatusEffect(negativeStatus);
         }
 
         //if (_spawnManager.PlayerList[0] == player)

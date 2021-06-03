@@ -270,11 +270,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8426861309795900643}
-  - component: {fileID: 1739738052667783899}
-  - component: {fileID: 2556583500497554419}
   - component: {fileID: -528278996552924949}
-  - component: {fileID: 590257299535109677}
   - component: {fileID: -6574525857140807001}
+  - component: {fileID: 1739738052667783899}
+  - component: {fileID: 2086795267370397504}
+  - component: {fileID: 1643694258390317994}
+  - component: {fileID: 590257299535109677}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -298,36 +299,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1739738052667783899
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8426861309795900642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd30d6fefb9005c418beb0c5b621c446, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _healthbar: {fileID: 9121206354390493234}
---- !u!114 &2556583500497554419
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8426861309795900642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d336054191cf12439ed0c47ea583b9f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _enemyName: NightShade
-  _enemyHealth: 200
-  _enemyAttack: 3
-  _enemySpeed: 6
-  _enemyLevel: 0
 --- !u!114 &-528278996552924949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -347,12 +318,83 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 1739738052667783899}
-  - {fileID: 2556583500497554419}
   - {fileID: -6574525857140807001}
+  - {fileID: 1739738052667783899}
+  - {fileID: 2086795267370397504}
+  - {fileID: 1643694258390317994}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &-6574525857140807001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8426861309795900642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 9
+    SynchronizeType: 0
+    Name: CastTrigger
+  - Type: 9
+    SynchronizeType: 1
+    Name: OnHitTrigger
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
+--- !u!114 &1739738052667783899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8426861309795900642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd30d6fefb9005c418beb0c5b621c446, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _healthbar: {fileID: 9121206354390493234}
+--- !u!114 &2086795267370397504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8426861309795900642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24db97a5492d54142b3164f0e08edeaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _characterName: NightShade
+  _characterHealth: 200
+  _characterAttack: 3
+  _characterSpeed: 8
+  _characterID: 0
+  _class: 2
+  _combatState: 0
+  _stanceStace: 0
+--- !u!114 &1643694258390317994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8426861309795900642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 516b702a0bc2cee4a84350789463da24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isPlayer: 0
 --- !u!95 &590257299535109677
 Animator:
   serializedVersion: 3
@@ -372,27 +414,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &-6574525857140807001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8426861309795900642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowLayerWeightsInspector: 1
-  ShowParameterInspector: 1
-  m_SynchronizeParameters:
-  - Type: 9
-    SynchronizeType: 0
-    Name: CastTrigger
-  m_SynchronizeLayers:
-  - SynchronizeType: 0
-    LayerIndex: 0
 --- !u!1 &9121206352877225436
 GameObject:
   m_ObjectHideFlags: 0
