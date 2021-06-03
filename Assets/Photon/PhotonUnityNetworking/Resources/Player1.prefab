@@ -511,6 +511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6adfd371b1bb4354b84901b29bce9af4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _timeOffset: 0.7
   _skillCooldown: 2
   _guardButton: {fileID: 6324903056018286993}
   _skyAttackButton: {fileID: 483969278551604264}
