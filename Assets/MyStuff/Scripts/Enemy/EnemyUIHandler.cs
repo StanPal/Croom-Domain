@@ -48,18 +48,50 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
 
     public void OnAttack()
     {
-        _battleManager.EnemyAttackPlayer(_enemy.Attack);
-        _animator.SetTrigger("CastTrigger");
-        ActionQueueCall();
+        int choice = Random.Range(0, 1);
+        Debug.Log("Enemy Choice" + choice);
+        switch (choice)
+        {
+            case 0:
+                PlayAnim();
+                break;
+            case 1:
+                PlayPrayerAnim();
+                break;
+            default:
+                break;
+        }
+
+        StartCoroutine(PlayAnim());
+        
         //_actionManager.AttackPlayer(this.gameObject, _enemy.ClassType);
+    }
+
+    private IEnumerator PlayAnim()
+    {
+        _canAttack = true;
+        _animator.SetTrigger("PunchTrigger");
+        yield return new WaitForSeconds(1.0f);
+        if (_canAttack)
+        {
+            _battleManager.EnemyAttackPlayer(_enemy.Attack);
+            ActionQueueCall();
+            StopCoroutine(PlayAnim());
+            _canAttack = false;
+        }
+    }
+
+    private IEnumerator PlayPrayerAnim()
+    {
+        _animator.SetBool("IsPraying", true);
+        yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length);
+        _animator.SetBool("IsPraying", false);
+        _enemy.onHeal(10.0f);
     }
 
     public void ActionQueueCall()
     { 
-        if (_TurnManager.ActionQueue.Count > 0)
-        {
-            _TurnManager.ActionQueue.Dequeue();
-        }
+        _TurnManager.ActionQueue.Dequeue();
         _TurnManager.State = BattleState.TransitionPhase;
     }
 

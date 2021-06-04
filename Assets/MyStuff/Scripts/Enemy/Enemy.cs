@@ -49,6 +49,12 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable, IPunInstantiateM
     public void TakeDamage(float damage)
     {
         _enemyHealth -= damage;
+        this.photonView.RPC("PlayOnHitAnim", RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void PlayOnHitAnim()
+    {
         _animator.SetTrigger("OnHitTrigger");
     }
 
@@ -66,6 +72,11 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable, IPunInstantiateM
             default:
                 break;
         }
+    }
+
+    public void onHeal(float healAmount)
+    {
+        _enemyHealth += healAmount;  
     }
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)

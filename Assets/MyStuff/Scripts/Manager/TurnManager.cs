@@ -141,6 +141,7 @@ public class TurnManager : MonoBehaviourPun
 
     private void TransitionPhase()
     {
+        Debug.Log("Action Queue Count: " + ActionQueue.Count);
         if(_actionQueue.Count == 0)
         {
             _state = BattleState.Start;

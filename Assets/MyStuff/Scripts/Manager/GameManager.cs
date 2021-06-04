@@ -5,7 +5,7 @@ using Photon.Realtime;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
-    public GameObject playerPrefab; 
+    public GameObject playerPrefab;
     private SpawnManager _spawnManager;
     private TurnManager _TurnManager;
     public static GameManager Instance;
@@ -30,33 +30,25 @@ public class GameManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         Instance = this;
-        
+
         if (Enemy.localPlayerInstance == null)
-        {         
+        {
             if (PhotonNetwork.IsMasterClient && PhotonNetwork.CountOfPlayers == 1)
             {
                 Debug.LogFormat("We are Instantiating Master Client Player from {0}", SceneManagerHelper.ActiveSceneName);
                 PhotonNetwork.Instantiate("Enemy", p3Pos.position, Quaternion.identity);
             }
         }
+        if (PhotonNetwork.CountOfPlayers == 2)
+        {
+            PhotonNetwork.Instantiate("Player1", p1Pos.position, Quaternion.identity);
+        }
+        if (PhotonNetwork.CountOfPlayers == 3)
+        {
+            PhotonNetwork.Instantiate("Player2", p2Pos.position, Quaternion.identity);
+        }
 
-        if (CharacterStats.localPlayerInstance == null)
-        {
-            Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
-  
-            if(PhotonNetwork.CountOfPlayers == 2)
-            {
-                PhotonNetwork.Instantiate("Player1", p1Pos.position, Quaternion.identity);
-            }
-            if (PhotonNetwork.CountOfPlayers == 3)
-            {
-                PhotonNetwork.Instantiate("Player2", p2Pos.position, Quaternion.identity);
-            }
-        }
-        else
-        {
-            Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
-        }
+
     }
 
 
@@ -74,11 +66,11 @@ public class GameManager : MonoBehaviourPunCallbacks
     public override void OnPlayerEnteredRoom(Player other)
     {
         // not seen if you're the player connecting
-        Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName); 
+        Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName);
         if (PhotonNetwork.IsMasterClient)
         {
             // called before OnPlayerLeftRoom
-            Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); 
+            Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient);
             LoadArena();
         }
     }
@@ -86,11 +78,11 @@ public class GameManager : MonoBehaviourPunCallbacks
     public override void OnPlayerLeftRoom(Player other)
     {
         // seen when other disconnects
-        Debug.LogFormat("OnPlayerLeftRoom() {0}", other.NickName); 
+        Debug.LogFormat("OnPlayerLeftRoom() {0}", other.NickName);
         if (PhotonNetwork.IsMasterClient)
         {
             // called before OnPlayerLeftRoom
-            Debug.LogFormat("OnPlayerLeftRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); 
+            Debug.LogFormat("OnPlayerLeftRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient);
             LoadArena();
         }
     }

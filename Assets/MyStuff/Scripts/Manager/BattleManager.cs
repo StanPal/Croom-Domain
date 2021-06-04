@@ -68,6 +68,7 @@ public class BattleManager : MonoBehaviourPun
     public void PunAttackPlayer (float damage)
     {
         int targetPlayer = Random.Range(0, _spawnManager.PlayerList.Count);
+        Debug.Log("Enemy Chose: " + targetPlayer);
         _spawnManager.PlayerList[targetPlayer].GetComponent<CharacterStats>().TakeDamage(damage);
     }
 

@@ -39,11 +39,8 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
         _spawnManager = FindObjectOfType<SpawnManager>();
         _animator = GetComponent<Animator>();
         _characterMaxHealth = _characterHealth;
-        if(photonView.IsMine)
-        {
-            CharacterStats.localPlayerInstance = this.gameObject;
-        }
-            DontDestroyOnLoad(this.gameObject);
+
+        DontDestroyOnLoad(this.gameObject);
         
     }
 
@@ -81,9 +78,14 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
         else
         {
             _characterHealth -= damage;
-            _animator.SetTrigger("OnHitTrigger");
+            this.photonView.RPC("PlayOnHitAnim", RpcTarget.All);
         }
         Debug.Log(_characterName + " HP: " + _characterHealth);
+    }
+
+    private void PlayOnHitAnim()
+    {
+        _animator.SetTrigger("OnHitTrigger");
     }
 
     public void OnStatusEffect(NegativeStatusEffect negativeStatus)
@@ -103,8 +105,7 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     }
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
-    {
-        
+    {        
        _spawnManager.PlayerList.Add(this.gameObject);  
         this.photonView.RPC("rotateModel", RpcTarget.All);
     }
