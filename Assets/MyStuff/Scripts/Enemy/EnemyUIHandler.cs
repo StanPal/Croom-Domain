@@ -35,8 +35,6 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
         _TurnManager = FindObjectOfType<TurnManager>();
         _enemy = GetComponent<Enemy>();
         _startPos = transform.position;
-        _Player1Pos = _spawnManager.P1Pos.position;
-        _Player2Pos = _spawnManager.P2Pos.position;
     }
 
 
