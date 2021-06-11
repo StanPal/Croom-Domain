@@ -8,123 +8,127 @@
 // <author>developer@exitgames.com</author>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Photon.Pun;
 using UnityEngine;
 
-namespace Photon.Pun.Demo.PunBasics
+public class CameraWork : MonoBehaviourPun
 {
-	/// <summary>
-	/// Camera work. Follow a target
-	/// </summary>
-	public class CameraWork : MonoBehaviour
-	{
-        #region Private Fields
+    #region Private Fields
 
-	    [Tooltip("The distance in the local x-z plane to the target")]
-	    [SerializeField]
-	    private float distance = 7.0f;
-	    
-	    [Tooltip("The height we want the camera to be above the target")]
-	    [SerializeField]
-	    private float height = 3.0f;
-	    
-	    [Tooltip("Allow the camera to be offseted vertically from the target, for example giving more view of the sceneray and less ground.")]
-	    [SerializeField]
-	    private Vector3 centerOffset = Vector3.zero;
+    [Tooltip("The distance in the local x-z plane to the target")]
+    [SerializeField]
+    private float distance = 7.0f;
 
-	    [Tooltip("Set this as false if a component of a prefab being instanciated by Photon Network, and manually call OnStartFollowing() when and if needed.")]
-	    [SerializeField]
-	    private bool followOnStart = false;
+    [Tooltip("The height we want the camera to be above the target")]
+    [SerializeField]
+    private float height = 3.0f;
 
-	    [Tooltip("The Smoothing for the camera to follow the target")]
-	    [SerializeField]
-	    private float smoothSpeed = 0.125f;
+    [Tooltip("Allow the camera to be offseted vertically from the target, for example giving more view of the sceneray and less ground.")]
+    [SerializeField]
+    private Vector3 centerOffset = Vector3.zero;
 
-        // cached transform of the target
-        Transform cameraTransform;
+    [Tooltip("Set this as false if a component of a prefab being instanciated by Photon Network, and manually call OnStartFollowing() when and if needed.")]
+    [SerializeField]
+    private bool followOnStart = false;
 
-		// maintain a flag internally to reconnect if target is lost or camera is switched
-		bool isFollowing;
-		
-		// Cache for camera offset
-		Vector3 cameraOffset = Vector3.zero;
-		
-		
-        #endregion
+    [Tooltip("The Smoothing for the camera to follow the target")]
+    [SerializeField]
+    private float smoothSpeed = 0.125f;
 
-        #region MonoBehaviour Callbacks
+    // cached transform of the target
+    Transform cameraTransform;
 
-        /// <summary>
-        /// MonoBehaviour method called on GameObject by Unity during initialization phase
-        /// </summary>
-        void Start()
-		{
-			// Start following the target if wanted.
-			if (followOnStart)
-			{
-				OnStartFollowing();
-			}
-		}
+    // maintain a flag internally to reconnect if target is lost or camera is switched
+    bool isFollowing;
+
+    // Cache for camera offset
+    Vector3 cameraOffset = Vector3.zero;
 
 
-		void LateUpdate()
-		{
-			// The transform target may not destroy on level load, 
-			// so we need to cover corner cases where the Main Camera is different everytime we load a new scene, and reconnect when that happens
-			if (cameraTransform == null && isFollowing)
-			{
-				OnStartFollowing();
-			}
+    #endregion
 
-			// only follow is explicitly declared
-			if (isFollowing) {
-				Follow ();
-			}
-		}
+    #region MonoBehaviour Callbacks
 
-		#endregion
+    /// <summary>
+    /// MonoBehaviour method called on GameObject by Unity during initialization phase
+    /// </summary>
+    void Start()
+    {
+        CameraWork _cameraWork = this.gameObject.GetComponent<CameraWork>();
+        // Start following the target if wanted.
+        if (_cameraWork != null)
+        {
+            if (photonView.IsMine)
+            {
+                _cameraWork.OnStartFollowing();
+            }
+        }
+        else
+        {
+            Debug.LogError("<Color=Red><a>Missing</a></Color> CameraWork Component on playerPrefab.", this);
+        }
+    }
 
-		#region Public Methods
 
-		/// <summary>
-		/// Raises the start following event. 
-		/// Use this when you don't know at the time of editing what to follow, typically instances managed by the photon network.
-		/// </summary>
-		public void OnStartFollowing()
-		{	      
-			cameraTransform = Camera.main.transform;
-			isFollowing = true;
-			// we don't smooth anything, we go straight to the right camera shot
-			Cut();
-		}
-		
-		#endregion
+    void LateUpdate()
+    {
+        // The transform target may not destroy on level load, 
+        // so we need to cover corner cases where the Main Camera is different everytime we load a new scene, and reconnect when that happens
+        if (cameraTransform == null && isFollowing)
+        {
+            OnStartFollowing();
+        }
 
-		#region Private Methods
+        // only follow is explicitly declared
+        if (isFollowing)
+        {
+            Follow();
+        }
+    }
 
-		/// <summary>
-		/// Follow the target smoothly
-		/// </summary>
-		void Follow()
-		{
-			cameraOffset.z = -distance;
-			cameraOffset.y = height;
-			
-		    cameraTransform.position = Vector3.Lerp(cameraTransform.position, this.transform.position +this.transform.TransformVector(cameraOffset), smoothSpeed*Time.deltaTime);
+    #endregion
 
-		    cameraTransform.LookAt(this.transform.position + centerOffset);
-		    
-	    }
+    #region Public Methods
 
-	   
-		void Cut()
-		{
-			cameraOffset.z = -distance;
-			cameraOffset.y = height;
+    /// <summary>
+    /// Raises the start following event. 
+    /// Use this when you don't know at the time of editing what to follow, typically instances managed by the photon network.
+    /// </summary>
+    public void OnStartFollowing()
+    {
+        cameraTransform = Camera.main.transform;
+        isFollowing = true;
+        // we don't smooth anything, we go straight to the right camera shot
+        Cut();
+    }
 
-			cameraTransform.position = this.transform.position + this.transform.TransformVector(cameraOffset);
+    #endregion
 
-			cameraTransform.LookAt(this.transform.position + centerOffset);
-		}
-		#endregion
-	}
+    #region Private Methods
+
+    /// <summary>
+    /// Follow the target smoothly
+    /// </summary>
+    void Follow()
+    {
+        cameraOffset.z = -distance;
+        cameraOffset.y = height;
+
+        cameraTransform.position = Vector3.Lerp(cameraTransform.position, this.transform.position + this.transform.TransformVector(cameraOffset), smoothSpeed * Time.deltaTime);
+
+        cameraTransform.LookAt(this.transform.position + centerOffset);
+
+    }
+
+
+    void Cut()
+    {
+        cameraOffset.z = -distance;
+        cameraOffset.y = height;
+
+        cameraTransform.position = this.transform.position + this.transform.TransformVector(cameraOffset);
+
+        cameraTransform.LookAt(this.transform.position + centerOffset);
+    }
+    #endregion
 }

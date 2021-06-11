@@ -406,14 +406,23 @@ MonoBehaviour:
     SynchronizeType: 0
     Name: CastTrigger
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: OnHitTrigger
+  - Type: 4
+    SynchronizeType: 2
+    Name: IsPraying
+  - Type: 4
+    SynchronizeType: 2
+    Name: IsPunching
+  - Type: 4
+    SynchronizeType: 0
+    Name: IsWalking
+  - Type: 9
+    SynchronizeType: 0
+    Name: HealTrigger
   - Type: 9
     SynchronizeType: 0
     Name: PunchTrigger
-  - Type: 4
-    SynchronizeType: 0
-    Name: IsPraying
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0

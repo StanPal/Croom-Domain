@@ -846,6 +846,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1076037987316968833, guid: a3d483d70b143534495a331df3809359, type: 3}
+      propertyPath: minCharacterCount
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1076037987316968839, guid: a3d483d70b143534495a331df3809359, type: 3}
       propertyPath: m_Name
       value: TurnManager

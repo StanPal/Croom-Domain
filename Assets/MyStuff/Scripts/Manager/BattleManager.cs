@@ -36,20 +36,9 @@ public class BattleManager : MonoBehaviourPun
     [PunRPC]
     public void PunAttackOtherPlayer(GameObject player, float damage, NegativeStatusEffect negativeStatus)
     {
-        if (_spawnManager.PlayerList[0] == player)
-        {
             _spawnManager.EnemyList[0].GetComponent<Enemy>().TakeDamage(damage);
             _spawnManager.EnemyList[0].GetComponent<EnemyUIHandler>().UpdateHealthBar();
             _spawnManager.EnemyList[0].GetComponent<Enemy>().OnStatusEffect(negativeStatus);
-
-        }
-        else
-        {
-            _spawnManager.EnemyList[0].GetComponent<Enemy>().TakeDamage(damage);
-            _spawnManager.EnemyList[0].GetComponent<EnemyUIHandler>().UpdateHealthBar();
-            _spawnManager.EnemyList[0].GetComponent<Enemy>().OnStatusEffect(negativeStatus);
-        }
-
         //if (_spawnManager.PlayerList[0] == player)
         //{
         //    _spawnManager.PlayerList[1].GetComponentInChildren<CharacterStats>().TakeDamage(damage);
@@ -72,5 +61,12 @@ public class BattleManager : MonoBehaviourPun
         _spawnManager.PlayerList[targetPlayer].GetComponent<CharacterStats>().TakeDamage(damage);
     }
 
+    [PunRPC]
+    public void TargetAllPlayer(float damage)
+    {
+        _spawnManager.PlayerList[0].GetComponent<CharacterStats>().TakeDamage(damage);
+        _spawnManager.PlayerList[1].GetComponent<CharacterStats>().TakeDamage(damage);
+
+    }
 
 }

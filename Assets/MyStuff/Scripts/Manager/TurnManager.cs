@@ -95,31 +95,31 @@ public class TurnManager : MonoBehaviourPun
             _actionQueue.Enqueue(_player2.gameObject);
             _actionQueue.Enqueue(_enemy1.gameObject);
         }
-        else if (_player1.Speed > _player2.Speed && _player1.Speed > _enemy1.Speed && _enemy1.Speed > _player2.Speed)
+         if (_player1.Speed > _player2.Speed && _player1.Speed > _enemy1.Speed && _enemy1.Speed > _player2.Speed)
         {
             _actionQueue.Enqueue(_player1.gameObject);
             _actionQueue.Enqueue(_enemy1.gameObject);
             _actionQueue.Enqueue(_player2.gameObject);
         }
-        else if (_player2.Speed > _player1.Speed && _player2.Speed > _enemy1.Speed && _player1.Speed > _enemy1.Speed)
+         if (_player2.Speed > _player1.Speed && _player2.Speed > _enemy1.Speed && _player1.Speed > _enemy1.Speed)
         {
             _actionQueue.Enqueue(_player2.gameObject);
             _actionQueue.Enqueue(_player1.gameObject);
             _actionQueue.Enqueue(_enemy1.gameObject);
         }
-        else if (_player2.Speed > _player1.Speed && _player2.Speed > _enemy1.Speed && _player1.Speed < _enemy1.Speed)
+         if (_player2.Speed > _player1.Speed && _player2.Speed > _enemy1.Speed && _player1.Speed < _enemy1.Speed)
         {
             _actionQueue.Enqueue(_player2.gameObject);
             _actionQueue.Enqueue(_enemy1.gameObject);
             _actionQueue.Enqueue(_player1.gameObject);
         }
-        else if (_enemy1.Speed > _player1.Speed && _enemy1.Speed > _player2.Speed && _player1.Speed > _player2.Speed)
+        if (_enemy1.Speed > _player1.Speed && _enemy1.Speed > _player2.Speed && _player1.Speed > _player2.Speed)
         {
             _actionQueue.Enqueue(_enemy1.gameObject);
             _actionQueue.Enqueue(_player1.gameObject);
             _actionQueue.Enqueue(_player2.gameObject);
         }
-        else if (_enemy1.Speed > _player1.Speed && _enemy1.Speed > _player2.Speed && _player1.Speed < _player2.Speed)
+         if (_enemy1.Speed > _player1.Speed && _enemy1.Speed > _player2.Speed && _player1.Speed < _player2.Speed)
         {
             _actionQueue.Enqueue(_enemy1.gameObject);
             _actionQueue.Enqueue(_player2.gameObject);
@@ -141,16 +141,16 @@ public class TurnManager : MonoBehaviourPun
 
     private void TransitionPhase()
     {
-        Debug.Log("Action Queue Count: " + ActionQueue.Count);
-        if(_actionQueue.Count == 0)
+        Debug.Log("Action Queue Count: " + ActionQueue.Count);        
+        if (ActionQueue.Count.Equals(0))
         {
             _state = BattleState.Start;
         }
-        else if (_actionQueue.Peek().TryGetComponent<EnemyUIHandler>(out EnemyUIHandler enemy))
+         if (_actionQueue.Peek().TryGetComponent<EnemyUIHandler>(out EnemyUIHandler enemy))
         {
             _state = BattleState.EnemyTurn;
         }
-        else
+        else if (_actionQueue.Peek().TryGetComponent<CharacterUIHandler>(out CharacterUIHandler player))
         {
             _state = BattleState.PlayerTurn;
         }

@@ -58,6 +58,7 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable, IPunInstantiateM
         _animator.SetTrigger("OnHitTrigger");
     }
 
+
     public void OnStatusEffect(NegativeStatusEffect negativeStatus)
     {
         switch (negativeStatus)
@@ -76,8 +77,11 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable, IPunInstantiateM
 
     public void onHeal(float healAmount)
     {
-        _enemyHealth += healAmount;  
+        Debug.Log("Enemy Health: " + _enemyHealth);
+        _enemyHealth += healAmount;
+        Debug.Log("Enemy Health: " + _enemyHealth);
     }
+   
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {

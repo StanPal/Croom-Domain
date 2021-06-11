@@ -93,7 +93,6 @@ public class WarriorSkills : MonoBehaviourPun
 
     private IEnumerator PlayAnim()
     {
-        Debug.Log(_animator.GetCurrentAnimatorStateInfo(0).length);
         yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length + _timeOffset);
         _animator.SetBool("IsWalking", true);
         PunMoveBackToPos();

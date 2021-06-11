@@ -10,9 +10,15 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
     private Enemy _enemy;
     private Animator _animator;
     private bool _canAttack;
+    private bool _isSwinging;
     private TurnManager _TurnManager;
     private ActionManager _actionManager;
     private BattleManager _battleManager;
+    private GameManager _spawnManager;
+    private Vector3 _startPos;
+    private Vector3 _Player1Pos;
+    private Vector3 _Player2Pos;
+
 
     private void Awake()
     {
@@ -21,13 +27,16 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
     }
 
     private void Initialize()
-    {        
+    {
         _animator = GetComponent<Animator>();
         _battleManager = FindObjectOfType<BattleManager>();
-        //_spawnManager = ServiceLocator.Get<SpawnManager>();
+        _spawnManager = ServiceLocator.Get<GameManager>();
         _actionManager = FindObjectOfType<ActionManager>();
         _TurnManager = FindObjectOfType<TurnManager>();
         _enemy = GetComponent<Enemy>();
+        _startPos = transform.position;
+        _Player1Pos = _spawnManager.P1Pos.position;
+        _Player2Pos = _spawnManager.P2Pos.position;
     }
 
 
@@ -48,37 +57,61 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
 
     public void OnAttack()
     {
-        int choice = Random.Range(0, 1);
-        Debug.Log("Enemy Choice" + choice);
-        switch (choice)
+        if (!_canAttack)
         {
-            case 0:
-                PlayAnim();
-                break;
-            case 1:
-                PlayPrayerAnim();
-                break;
-            default:
-                break;
+            _canAttack = true;
+            int choice = Random.Range(0, 3);
+            Debug.Log("Enemy Choice" + choice);
+            ActionQueueCall();
+            switch (choice)
+            {
+                case 0:
+                    _isSwinging = true;
+                    this.photonView.RPC("Swing", RpcTarget.All);
+                    break;
+                case 1:
+                    this.photonView.RPC("Heal", RpcTarget.All);
+                    break;
+                case 2:
+                    this.photonView.RPC("Cast", RpcTarget.All);
+                    break;
+                default:
+                    break;
+            }
         }
-
-        StartCoroutine(PlayAnim());
-        
         //_actionManager.AttackPlayer(this.gameObject, _enemy.ClassType);
     }
 
-    private IEnumerator PlayAnim()
+    [PunRPC] 
+    private void Swing()
     {
-        _canAttack = true;
         _animator.SetTrigger("PunchTrigger");
-        yield return new WaitForSeconds(1.0f);
-        if (_canAttack)
-        {
-            _battleManager.EnemyAttackPlayer(_enemy.Attack);
-            ActionQueueCall();
-            StopCoroutine(PlayAnim());
-            _canAttack = false;
-        }
+        _battleManager.EnemyAttackPlayer(_enemy.Attack);
+        //StartCoroutine(PlayAnim());
+        // StartCoroutine(SmoothLerp(3f, _startPos, _Player1Pos, new Vector3(-1f, 0f, 0f)));
+    }
+
+    [PunRPC]
+    private void Heal()
+    {
+        _animator.SetTrigger("HealTrigger");
+        _enemy.onHeal(10.0f);
+        //  StartCoroutine(PlayPrayerAnim());
+    }
+
+    [PunRPC]
+    private void Cast()
+    {
+        _animator.SetTrigger("CastTrigger");
+        _battleManager.TargetAllPlayer(_enemy.Attack);
+    }
+
+    private IEnumerator PlayAnim()
+    {        
+        _animator.SetBool("IsPunching", true);
+        yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length);
+        _animator.SetBool("IsPunching", false);
+        _battleManager.EnemyAttackPlayer(_enemy.Attack);
     }
 
     private IEnumerator PlayPrayerAnim()
@@ -89,19 +122,45 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
         _enemy.onHeal(10.0f);
     }
 
+    private IEnumerator SmoothLerp(float time, Vector3 starting, Vector3 Target, Vector3 offset)
+    {
+        Vector3 startingPos = starting;
+        Vector3 finalPos = Target - offset;
+
+        float elapsedTime = 0;
+        _animator.SetBool("IsWalking", true);
+        while (elapsedTime < time)
+        {
+            transform.position = Vector3.Lerp(startingPos, finalPos, (elapsedTime / time));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        if (_isSwinging)
+        {
+            _animator.SetBool("IsWalking", false);
+            _isSwinging = false;
+            _battleManager.EnemyAttackPlayer(_enemy.Attack);
+            transform.position = _startPos;
+        }
+    }    
+
+
+
     public void ActionQueueCall()
-    { 
+    {
+        _canAttack = false;
         _TurnManager.ActionQueue.Dequeue();
         _TurnManager.State = BattleState.TransitionPhase;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-       if(stream.IsWriting)
+        if (stream.IsWriting)
         {
             stream.SendNext(_canAttack);
         }
-       else
+        else
         {
             this._canAttack = (bool)stream.ReceiveNext();
         }

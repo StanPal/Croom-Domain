@@ -83,6 +83,7 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
         Debug.Log(_characterName + " HP: " + _characterHealth);
     }
 
+    [PunRPC]
     private void PlayOnHitAnim()
     {
         _animator.SetTrigger("OnHitTrigger");
