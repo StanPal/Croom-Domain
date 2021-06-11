@@ -27,12 +27,13 @@ public class TurnManager : MonoBehaviourPun
 
     private void Awake()
     {
-        GameLoader.CallOnComplete(Initialize);
+        ServiceLocator.Register<TurnManager>(this);
+        _spawnManager = FindObjectOfType<SpawnManager>();
     }
 
     private void Initialize()
     {
-        _spawnManager = FindObjectOfType<SpawnManager>();
+       
     }
 
     // Start is called before the first frame update
@@ -95,40 +96,41 @@ public class TurnManager : MonoBehaviourPun
             _actionQueue.Enqueue(_player2.gameObject);
             _actionQueue.Enqueue(_enemy1.gameObject);
         }
-         if (_player1.Speed > _player2.Speed && _player1.Speed > _enemy1.Speed && _enemy1.Speed > _player2.Speed)
+        else if (_player1.Speed > _player2.Speed && _player1.Speed > _enemy1.Speed && _enemy1.Speed > _player2.Speed)
         {
             _actionQueue.Enqueue(_player1.gameObject);
             _actionQueue.Enqueue(_enemy1.gameObject);
             _actionQueue.Enqueue(_player2.gameObject);
         }
-         if (_player2.Speed > _player1.Speed && _player2.Speed > _enemy1.Speed && _player1.Speed > _enemy1.Speed)
+        else if (_player2.Speed > _player1.Speed && _player2.Speed > _enemy1.Speed && _player1.Speed > _enemy1.Speed)
         {
             _actionQueue.Enqueue(_player2.gameObject);
             _actionQueue.Enqueue(_player1.gameObject);
             _actionQueue.Enqueue(_enemy1.gameObject);
         }
-         if (_player2.Speed > _player1.Speed && _player2.Speed > _enemy1.Speed && _player1.Speed < _enemy1.Speed)
+        else if (_player2.Speed > _player1.Speed && _player2.Speed > _enemy1.Speed && _player1.Speed < _enemy1.Speed)
         {
             _actionQueue.Enqueue(_player2.gameObject);
             _actionQueue.Enqueue(_enemy1.gameObject);
             _actionQueue.Enqueue(_player1.gameObject);
         }
-        if (_enemy1.Speed > _player1.Speed && _enemy1.Speed > _player2.Speed && _player1.Speed > _player2.Speed)
+        else if (_enemy1.Speed > _player1.Speed && _enemy1.Speed > _player2.Speed && _player1.Speed > _player2.Speed)
         {
             _actionQueue.Enqueue(_enemy1.gameObject);
             _actionQueue.Enqueue(_player1.gameObject);
             _actionQueue.Enqueue(_player2.gameObject);
         }
-         if (_enemy1.Speed > _player1.Speed && _enemy1.Speed > _player2.Speed && _player1.Speed < _player2.Speed)
+        else if (_enemy1.Speed > _player1.Speed && _enemy1.Speed > _player2.Speed && _player1.Speed < _player2.Speed)
         {
             _actionQueue.Enqueue(_enemy1.gameObject);
             _actionQueue.Enqueue(_player2.gameObject);
             _actionQueue.Enqueue(_player1.gameObject);
         }
 
+        _enemy1.GetComponent<EnemyUIHandler>().CanAttack = true;
 
         Debug.Log(_actionQueue.Count);
-        if (_actionQueue.Peek().TryGetComponent<EnemyUIHandler>(out EnemyUIHandler enemy))
+        if (_actionQueue.Peek() == _enemy1.gameObject)
         {
             _state = BattleState.EnemyTurn;
         }
@@ -141,12 +143,12 @@ public class TurnManager : MonoBehaviourPun
 
     private void TransitionPhase()
     {
-        Debug.Log("Action Queue Count: " + ActionQueue.Count);        
+        Debug.Log("Action Queue Count: " + ActionQueue.Count);
         if (ActionQueue.Count.Equals(0))
         {
             _state = BattleState.Start;
         }
-         if (_actionQueue.Peek().TryGetComponent<EnemyUIHandler>(out EnemyUIHandler enemy))
+        else if (_actionQueue.Peek().TryGetComponent<EnemyUIHandler>(out EnemyUIHandler enemy))
         {
             _state = BattleState.EnemyTurn;
         }
@@ -161,6 +163,7 @@ public class TurnManager : MonoBehaviourPun
     {
         if(_actionQueue.Peek().TryGetComponent<CharacterUIHandler>(out CharacterUIHandler characterUI))
         {
+            characterUI.CanMove = true;
             characterUI.OnMove(); 
         }
     }

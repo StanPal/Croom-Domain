@@ -19,9 +19,9 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
 
     private bool _canMove = false;
     private bool _canAttack = false;
-    private bool _playerTurn = false;
-    private bool _actionsReset = false;
-    private bool _onHit;
+//    private bool _playerTurn = false;
+//    private bool _actionsReset = false;
+//    private bool _onHit;
     private SpawnManager _spawnManager;
 
     public Slider RecieverSlider { get => _healthbar; }
@@ -79,7 +79,7 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
     
     public void OnMove()
     {
-        _canMove = true;
+ 
         if(_characterStats.CombatState == CombatState.None)
         {
             ResetSkill();
@@ -95,7 +95,7 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
     public void UpdateHealthBar()
     {
         _healthbar.value = _characterStats.CurrentHealth;
-        _onHit = false;
+  //      _onHit = false;
     }
 
     public void OnSkillOne()
@@ -120,11 +120,7 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
     {
         _canMove = false;
         Debug.Log("Current Queue Count: " + _TurnManager.ActionQueue.Count);
-
-        if (_TurnManager.ActionQueue.Count > 0)
-        {
-            _TurnManager.ActionQueue.Dequeue();
-        }
+        _TurnManager.ActionQueue.Dequeue();
         _TurnManager.State = BattleState.TransitionPhase;
         
     }

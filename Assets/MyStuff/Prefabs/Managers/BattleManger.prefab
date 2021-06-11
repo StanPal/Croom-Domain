@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bdb2bb1d9ada224496f25f01c4851e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _TurnManager: {fileID: 0}
+  _TurnManager: {fileID: 1076037987316968833, guid: a3d483d70b143534495a331df3809359, type: 3}
   _PlayerOneHealthBar: {fileID: 0}
   _PlayerTwoHealthBar: {fileID: 0}
 --- !u!114 &884345849323639389

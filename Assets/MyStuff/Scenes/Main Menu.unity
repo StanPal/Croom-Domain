@@ -1997,6 +1997,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1942427622635894776, guid: 66c4e394f95dfdb4ebb6a05f7f1b67fe, type: 3}
+      propertyPath: _turnManager
+      value: 
+      objectReference: {fileID: 1076037987316968839, guid: a3d483d70b143534495a331df3809359, type: 3}
+    - target: {fileID: 1942427622635894776, guid: 66c4e394f95dfdb4ebb6a05f7f1b67fe, type: 3}
       propertyPath: _spawnManager
       value: 
       objectReference: {fileID: 8592087860370149803, guid: 4b23ec32a9a61c340b7ec06ee3b18370, type: 3}
@@ -2004,6 +2008,10 @@ PrefabInstance:
       propertyPath: _actionManager
       value: 
       objectReference: {fileID: 633489473922144288, guid: a56936bd0fcd17c45ace6196bea4d97e, type: 3}
+    - target: {fileID: 1942427622635894776, guid: 66c4e394f95dfdb4ebb6a05f7f1b67fe, type: 3}
+      propertyPath: _battleManager
+      value: 
+      objectReference: {fileID: 884345849323639390, guid: 7d35357ddaae3234db1bc9f2437537a6, type: 3}
     - target: {fileID: 1942427622635894777, guid: 66c4e394f95dfdb4ebb6a05f7f1b67fe, type: 3}
       propertyPath: m_RootOrder
       value: 6

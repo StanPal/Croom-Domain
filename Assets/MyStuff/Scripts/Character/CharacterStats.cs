@@ -40,7 +40,7 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
         _animator = GetComponent<Animator>();
         _characterMaxHealth = _characterHealth;
 
-        DontDestroyOnLoad(this.gameObject);
+ 
         
     }
 

@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class WarriorSkills : MonoBehaviourPun
 {
+    public static GameObject localPlayerInstance;
+
     private Animator _animator;
     private CharacterUIHandler _characterUIHandler;
     private CharacterStats _characterStats;
@@ -27,6 +29,11 @@ public class WarriorSkills : MonoBehaviourPun
     private void Awake()
     {
         GameLoader.CallOnComplete(Initialize);
+        if(photonView.IsMine)
+        {
+            WarriorSkills.localPlayerInstance = this.gameObject;
+        }
+        DontDestroyOnLoad(this.gameObject);
     }
 
     private void Initialize()

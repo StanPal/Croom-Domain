@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable, IPunInstantiateM
     [SerializeField] private CharacterClass _class = CharacterClass.Mage;
 
     private float _enemyMaxHealth;
-    private int _stunTimer;
+    //private int _stunTimer;
     public float Speed { get => _enemySpeed; }
     public string PlayerName { get => _enemyName; }
     public float MaxHealth { get => _enemyMaxHealth; }
@@ -66,7 +66,7 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable, IPunInstantiateM
             case NegativeStatusEffect.None:
                 break;
             case NegativeStatusEffect.Stunned:
-                _stunTimer = 1;
+               // _stunTimer = 1;
                 break;
             case NegativeStatusEffect.Burning:
                 break;
@@ -78,7 +78,14 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable, IPunInstantiateM
     public void onHeal(float healAmount)
     {
         Debug.Log("Enemy Health: " + _enemyHealth);
-        _enemyHealth += healAmount;
+        if (_enemyHealth != _enemyMaxHealth)
+        {
+            _enemyHealth += healAmount;
+        }
+        if (_enemyHealth > _enemyMaxHealth)
+        {
+            _enemyHealth = _enemyMaxHealth;
+        }
         Debug.Log("Enemy Health: " + _enemyHealth);
     }
    

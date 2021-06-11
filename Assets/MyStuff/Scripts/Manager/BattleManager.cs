@@ -6,6 +6,7 @@ using Photon.Pun;
 
 public class BattleManager : MonoBehaviourPun
 {
+    public static GameObject localBattleManagerInstance;
     [SerializeField] private TurnManager _TurnManager;
     [SerializeField] private Slider _PlayerOneHealthBar;
     [SerializeField] private Slider _PlayerTwoHealthBar;
@@ -18,14 +19,15 @@ public class BattleManager : MonoBehaviourPun
 
     private void Awake()
     {
-        GameLoader.CallOnComplete(Initialize);
+        ServiceLocator.Register<BattleManager>(this);
+        _spawnManager = ServiceLocator.Get<SpawnManager>();
+        _TurnManager = ServiceLocator.Get<TurnManager>();
+        //GameLoader.CallOnComplete(Initialize);
     }
 
     private void Initialize()
     {
-        _spawnManager = ServiceLocator.Get<SpawnManager>();
-        _TurnManager = FindObjectOfType<TurnManager>();
-        _gameManager = FindObjectOfType<GameManager>();
+        
     }
 
     public void EnemyAttackPlayer(float damage)

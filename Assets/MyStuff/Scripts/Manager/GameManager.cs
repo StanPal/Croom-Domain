@@ -5,7 +5,7 @@ using Photon.Realtime;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
-    public GameObject playerPrefab;
+    public GameObject gameManager;
     private SpawnManager _spawnManager;
     private TurnManager _TurnManager;
     public static GameManager Instance;
@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     public Transform P2Pos { get => p2Pos; }
     public Transform P3Pos { get => p3Pos; }
 
+    private bool p1spawned;
+    private bool p2spawned;
 
     private void Awake()
     {
@@ -39,18 +41,19 @@ public class GameManager : MonoBehaviourPunCallbacks
                 PhotonNetwork.Instantiate("Enemy", p3Pos.position, Quaternion.identity);
             }
         }
-        if (PhotonNetwork.CountOfPlayers == 2)
+
+        if (WarriorSkills.localPlayerInstance == null && PhotonNetwork.CountOfPlayers == 2 && !p1spawned)
         {
             PhotonNetwork.Instantiate("Player1", p1Pos.position, Quaternion.identity);
+            p1spawned = true;
         }
-        if (PhotonNetwork.CountOfPlayers == 3)
+        if (ArcherSkills.localPlayerInstance == null && PhotonNetwork.CountOfPlayers == 3 && !p2spawned)
         {
             PhotonNetwork.Instantiate("Player2", p2Pos.position, Quaternion.identity);
+            p2spawned = true;
         }
 
-
-    }
-
+    }    
 
     /// Called when the local player left the room. We need to load the launcher scene.
     public override void OnLeftRoom()

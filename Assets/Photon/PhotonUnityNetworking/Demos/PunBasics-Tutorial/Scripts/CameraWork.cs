@@ -27,9 +27,9 @@ public class CameraWork : MonoBehaviourPun
     [SerializeField]
     private Vector3 centerOffset = Vector3.zero;
 
-    [Tooltip("Set this as false if a component of a prefab being instanciated by Photon Network, and manually call OnStartFollowing() when and if needed.")]
-    [SerializeField]
-    private bool followOnStart = false;
+   // [Tooltip("Set this as false if a component of a prefab being instanciated by Photon Network, and manually call OnStartFollowing() when and if needed.")]
+ //   [SerializeField]
+  //  private bool followOnStart = false;
 
     [Tooltip("The Smoothing for the camera to follow the target")]
     [SerializeField]

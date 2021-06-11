@@ -14,32 +14,34 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
     private TurnManager _TurnManager;
     private ActionManager _actionManager;
     private BattleManager _battleManager;
-    private GameManager _spawnManager;
+    private GameManager _gameManager;
     private Vector3 _startPos;
     private Vector3 _Player1Pos;
     private Vector3 _Player2Pos;
 
+    public bool CanAttack { set => _canAttack = value; }
 
     private void Awake()
     {
         GameLoader.CallOnComplete(Initialize);
-
     }
 
     private void Initialize()
     {
         _animator = GetComponent<Animator>();
         _battleManager = FindObjectOfType<BattleManager>();
-        _spawnManager = ServiceLocator.Get<GameManager>();
+        _gameManager = FindObjectOfType<GameManager>();
         _actionManager = FindObjectOfType<ActionManager>();
         _TurnManager = FindObjectOfType<TurnManager>();
         _enemy = GetComponent<Enemy>();
-        _startPos = transform.position;
+        _startPos = transform.position;        
     }
 
 
     private void Start()
     {
+        _Player1Pos = _gameManager.P1Pos.position;
+        _Player2Pos = _gameManager.P2Pos.position;
         _healthbar.maxValue = _enemy.MaxHealth;
     }
 
@@ -55,12 +57,11 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
 
     public void OnAttack()
     {
-        if (!_canAttack)
+        if (_canAttack)
         {
-            _canAttack = true;
+
             int choice = Random.Range(0, 3);
-            Debug.Log("Enemy Choice" + choice);
-            ActionQueueCall();
+            Debug.Log("Enemy Choice " + choice);  
             switch (choice)
             {
                 case 0:
@@ -76,8 +77,15 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
                 default:
                     break;
             }
+            this.photonView.RPC("ActionQueueCall", RpcTarget.All);
         }
         //_actionManager.AttackPlayer(this.gameObject, _enemy.ClassType);
+    }
+
+    [PunRPC]
+    private void ActionMove()
+    {
+
     }
 
     [PunRPC] 
@@ -143,8 +151,7 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
         }
     }    
 
-
-
+    [PunRPC]
     public void ActionQueueCall()
     {
         _canAttack = false;
