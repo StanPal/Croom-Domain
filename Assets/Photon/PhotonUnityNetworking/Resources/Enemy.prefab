@@ -189,17 +189,17 @@ RectTransform:
   m_GameObject: {fileID: 2757093631975625262}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children:
   - {fileID: 2757093631855605268}
   m_Father: {fileID: 8426861309795900643}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 2.94, y: 3.22}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &2757093631975625249
 Canvas:
   m_ObjectHideFlags: 0
@@ -209,7 +209,7 @@ Canvas:
   m_GameObject: {fileID: 2757093631975625262}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 2
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -243,7 +243,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &2757093631975625263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -406,22 +406,22 @@ MonoBehaviour:
     SynchronizeType: 0
     Name: CastTrigger
   - Type: 9
-    SynchronizeType: 2
+    SynchronizeType: 1
     Name: OnHitTrigger
   - Type: 4
-    SynchronizeType: 2
+    SynchronizeType: 1
     Name: IsPraying
   - Type: 4
-    SynchronizeType: 2
+    SynchronizeType: 1
     Name: IsPunching
   - Type: 4
     SynchronizeType: 0
     Name: IsWalking
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: HealTrigger
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: PunchTrigger
   m_SynchronizeLayers:
   - SynchronizeType: 0
@@ -611,8 +611,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -138.5, y: -84.5}
-  m_SizeDelta: {x: 160, y: 20}
+  m_AnchoredPosition: {x: -136, y: -86.13}
+  m_SizeDelta: {x: 134.99, y: 16.74}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &9121206354390493234
 MonoBehaviour:

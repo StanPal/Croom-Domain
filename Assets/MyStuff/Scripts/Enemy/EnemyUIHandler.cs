@@ -18,7 +18,7 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
     private Vector3 _startPos;
     private Vector3 _Player1Pos;
     private Vector3 _Player2Pos;
-
+    static private int choice;
     public bool CanAttack { set => _canAttack = value; }
 
     private void Awake()
@@ -55,29 +55,38 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
         _healthbar.value = _enemy.CurrentHealth;
     }
 
+    public void RandomRoll()
+    {
+        choice = Random.Range(0, 3);
+    }
+
     public void OnAttack()
     {
+        _canAttack = true;
         if (_canAttack)
         {
-
-            int choice = Random.Range(0, 3);
+            choice = Random.Range(0, 3);
+            _canAttack = false;
             Debug.Log("Enemy Choice " + choice);  
             switch (choice)
             {
                 case 0:
                     _isSwinging = true;
                     this.photonView.RPC("Swing", RpcTarget.All);
+                    _battleManager.EnemyAttackPlayer(_enemy.Attack);
                     break;
                 case 1:
+                    _enemy.onHeal(10.0f);
                     this.photonView.RPC("Heal", RpcTarget.All);
                     break;
                 case 2:
                     this.photonView.RPC("Cast", RpcTarget.All);
+                    _battleManager.TargetAllPlayer(_enemy.Attack);
                     break;
                 default:
                     break;
             }
-            this.photonView.RPC("ActionQueueCall", RpcTarget.All);
+            ActionQueueCall();
         }
         //_actionManager.AttackPlayer(this.gameObject, _enemy.ClassType);
     }
@@ -92,7 +101,7 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
     private void Swing()
     {
         _animator.SetTrigger("PunchTrigger");
-        _battleManager.EnemyAttackPlayer(_enemy.Attack);
+
         //StartCoroutine(PlayAnim());
         // StartCoroutine(SmoothLerp(3f, _startPos, _Player1Pos, new Vector3(-1f, 0f, 0f)));
     }
@@ -101,7 +110,7 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
     private void Heal()
     {
         _animator.SetTrigger("HealTrigger");
-        _enemy.onHeal(10.0f);
+
         //  StartCoroutine(PlayPrayerAnim());
     }
 
@@ -109,7 +118,6 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
     private void Cast()
     {
         _animator.SetTrigger("CastTrigger");
-        _battleManager.TargetAllPlayer(_enemy.Attack);
     }
 
     private IEnumerator PlayAnim()
@@ -151,10 +159,10 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
         }
     }    
 
-    [PunRPC]
     public void ActionQueueCall()
     {
         _canAttack = false;
+        Debug.Log("Current Queue Count: " + _TurnManager.ActionQueue.Count);
         _TurnManager.ActionQueue.Dequeue();
         _TurnManager.State = BattleState.TransitionPhase;
     }

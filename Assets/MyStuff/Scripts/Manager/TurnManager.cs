@@ -45,29 +45,13 @@ public class TurnManager : MonoBehaviourPun
 
     private void Update()
     {
-        switch (_state)
+        if(_state == BattleState.SetupStage)
         {
-            case BattleState.SetupStage:
-                SetUpPhase();
-                break;
-            case BattleState.Start:
-                SetUpTurnQueue();
-                break;
-            case BattleState.PlayerTurn:
-                PlayerTurn();
-                break;
-            case BattleState.TransitionPhase:
-                TransitionPhase();
-                break;
-            case BattleState.EnemyTurn:
-                EnemyTurn();
-                break;
-            case BattleState.Won:
-                break;
-            case BattleState.Lost:
-                break;
-            default:
-                break;
+            SetUpPhase();
+        }
+        if (_state == BattleState.TransitionPhase)
+        {
+            TransitionPhase();
         }
     }
 
@@ -84,7 +68,8 @@ public class TurnManager : MonoBehaviourPun
             _player1 = _spawnManager.PlayerList[0].GetComponentInChildren<CharacterStats>();
             _player2 = _spawnManager.PlayerList[1].GetComponentInChildren<CharacterStats>();
             _enemy1 = _spawnManager.EnemyList[0].GetComponent<Enemy>();
-            _state = BattleState.Start;
+            //_state = BattleState.Start;
+            SetUpTurnQueue();
         }
     }
 
@@ -127,17 +112,14 @@ public class TurnManager : MonoBehaviourPun
             _actionQueue.Enqueue(_player1.gameObject);
         }
 
-        _enemy1.GetComponent<EnemyUIHandler>().CanAttack = true;
-
         Debug.Log(_actionQueue.Count);
         if (_actionQueue.Peek() == _enemy1.gameObject)
         {
-            _state = BattleState.EnemyTurn;
+            EnemyTurn();
         }
         else
         {
-            _state = BattleState.PlayerTurn;
-
+            PlayerTurn();
         }
     }
 
@@ -146,15 +128,18 @@ public class TurnManager : MonoBehaviourPun
         Debug.Log("Action Queue Count: " + ActionQueue.Count);
         if (ActionQueue.Count.Equals(0))
         {
-            _state = BattleState.Start;
+            _state = BattleState.SetupStage;
+            SetUpTurnQueue();
         }
         else if (_actionQueue.Peek().TryGetComponent<EnemyUIHandler>(out EnemyUIHandler enemy))
         {
+            EnemyTurn();
             _state = BattleState.EnemyTurn;
         }
         else if (_actionQueue.Peek().TryGetComponent<CharacterUIHandler>(out CharacterUIHandler player))
         {
             _state = BattleState.PlayerTurn;
+            PlayerTurn();
         }
     }
 
@@ -162,8 +147,7 @@ public class TurnManager : MonoBehaviourPun
     public void PlayerTurn()
     {
         if(_actionQueue.Peek().TryGetComponent<CharacterUIHandler>(out CharacterUIHandler characterUI))
-        {
-            characterUI.CanMove = true;
+        {   
             characterUI.OnMove(); 
         }
     }
@@ -171,7 +155,7 @@ public class TurnManager : MonoBehaviourPun
     private void EnemyTurn()
     {
        if(_actionQueue.Peek().TryGetComponent<EnemyUIHandler>(out EnemyUIHandler enemyUI))
-        {
+        {   
             enemyUI.OnAttack();
         }
     }

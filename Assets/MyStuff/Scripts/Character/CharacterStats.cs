@@ -38,10 +38,7 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
     {
         _spawnManager = FindObjectOfType<SpawnManager>();
         _animator = GetComponent<Animator>();
-        _characterMaxHealth = _characterHealth;
-
- 
-        
+        _characterMaxHealth = _characterHealth;        
     }
 
     private void Update()

@@ -79,7 +79,7 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
     
     public void OnMove()
     {
- 
+        _canMove = true;
         if(_characterStats.CombatState == CombatState.None)
         {
             ResetSkill();
@@ -120,9 +120,16 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
     {
         _canMove = false;
         Debug.Log("Current Queue Count: " + _TurnManager.ActionQueue.Count);
+        StartCoroutine(waitforturnEnd());
+        
+        
+    }
+
+    private IEnumerator waitforturnEnd()
+    {
+        yield return new WaitForSeconds(1.5f);
         _TurnManager.ActionQueue.Dequeue();
         _TurnManager.State = BattleState.TransitionPhase;
-        
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
