@@ -30,10 +30,6 @@ public class BattleManager : MonoBehaviourPun
         
     }
 
-    public void EnemyAttackPlayer(float damage)
-    {
-        this.photonView.RPC("PunAttackPlayer", RpcTarget.All, damage);
-    }
 
     [PunRPC]
     public void PunAttackOtherPlayer(GameObject player, float damage, NegativeStatusEffect negativeStatus)
@@ -56,18 +52,20 @@ public class BattleManager : MonoBehaviourPun
     }
 
     [PunRPC]
-    public void PunAttackPlayer (float damage)
-    {
-        int targetPlayer = Random.Range(0, _spawnManager.PlayerList.Count);
-        Debug.Log("Enemy Chose: " + targetPlayer);
-        _spawnManager.PlayerList[targetPlayer].GetComponent<CharacterStats>().TakeDamage(damage);
+    public void PunAttackPlayer (float damage, int choice)
+    {                
+        _spawnManager.PlayerList[0].GetComponent<CharacterStats>().TakeDamage(damage);
+        _spawnManager.PlayerList[0].GetComponent<CharacterUIHandler>().UpdateHealthBar();
+
     }
 
     [PunRPC]
     public void TargetAllPlayer(float damage)
     {
         _spawnManager.PlayerList[0].GetComponent<CharacterStats>().TakeDamage(damage);
+        _spawnManager.PlayerList[0].GetComponent<CharacterUIHandler>().UpdateHealthBar();
         _spawnManager.PlayerList[1].GetComponent<CharacterStats>().TakeDamage(damage);
+        _spawnManager.PlayerList[1].GetComponent<CharacterUIHandler>().UpdateHealthBar();
 
     }
 

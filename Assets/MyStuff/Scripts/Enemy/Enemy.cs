@@ -15,14 +15,18 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable, IPunInstantiateM
     [SerializeField] private float _enemySpeed;
     [SerializeField] private int _enemyLevel;
     [SerializeField] private CharacterClass _class = CharacterClass.Mage;
+    private bool enemyHit;
 
     private float _enemyMaxHealth;
-    //private int _stunTimer;
+    private bool isStunned;
+    private int _stunTimer;
     public float Speed { get => _enemySpeed; }
     public string PlayerName { get => _enemyName; }
     public float MaxHealth { get => _enemyMaxHealth; }
     public float CurrentHealth { get => _enemyHealth; set => _enemyHealth = value; }
     public float Attack { get => _enemyAttack; set => _enemyAttack = value; }
+    public bool Stunned { get => isStunned; }
+    public int StunTimer { get => _stunTimer; set => _stunTimer = value; }
     public CharacterClass ClassType { get => _class; }
     
 
@@ -44,20 +48,62 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable, IPunInstantiateM
         {
             this.gameObject.SetActive(false);
         }
+        if(enemyHit)
+        {
+            this.photonView.RPC("PlayEnemyHitAnim", RpcTarget.All);
+        }
+        if(_stunTimer > 0)
+        {
+            this.photonView.RPC("PlayStun", RpcTarget.All);
+        }
+        else if (_stunTimer == 0)
+        {
+            this.photonView.RPC("DisableStun", RpcTarget.All);
+        }
     }
 
     public void TakeDamage(float damage)
     {
         _enemyHealth -= damage;
-        this.photonView.RPC("PlayOnHitAnim", RpcTarget.All);
+        //enemyHit = true;
+        this.photonView.RPC("PlayEnemyHitAnim", RpcTarget.All);
+        
+    }
+
+    public void DisableStunEffect()
+    {
+        this.photonView.RPC("DisableStun", RpcTarget.All);
     }
 
     [PunRPC]
-    private void PlayOnHitAnim()
+    private void PlayStun()
     {
-        _animator.SetTrigger("OnHitTrigger");
+        _animator.SetBool("IsStun", true);
     }
 
+
+    [PunRPC] 
+    private void DisableStun()
+    {
+        _stunTimer = -1;
+        _animator.SetBool("IsStun", false);
+    }
+
+    [PunRPC]
+    private void PlayEnemyHitAnim()
+    {
+        _animator.SetTrigger("OnHitTrigger");
+        //StartCoroutine(OnHitRoutine());
+    }
+
+    private IEnumerator OnHitRoutine()
+    {
+        enemyHit = false;
+        _animator.SetBool("OnHit", true);
+        yield return new WaitForSeconds(1.3f);
+        _animator.SetBool("OnHit", false);
+
+    }
 
     public void OnStatusEffect(NegativeStatusEffect negativeStatus)
     {
@@ -66,7 +112,7 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable, IPunInstantiateM
             case NegativeStatusEffect.None:
                 break;
             case NegativeStatusEffect.Stunned:
-               // _stunTimer = 1;
+                _stunTimer = 1;
                 break;
             case NegativeStatusEffect.Burning:
                 break;
@@ -109,11 +155,13 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable, IPunInstantiateM
         if (stream.IsWriting)
         {
             stream.SendNext(CurrentHealth);
+            stream.SendNext(_stunTimer);
         }
         else
         {
             //We are reading input to our health and write it back to our client and synced across the network
             this._enemyHealth = (float)stream.ReceiveNext();
+            this._stunTimer = (int)stream.ReceiveNext();
         }
     }
 }

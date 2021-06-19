@@ -49,10 +49,6 @@ public class TurnManager : MonoBehaviourPun
         {
             SetUpPhase();
         }
-        if (_state == BattleState.TransitionPhase)
-        {
-            TransitionPhase();
-        }
     }
 
     public void PlayerDamaged(CharacterStats reciever, CharacterStats sender)
@@ -113,17 +109,18 @@ public class TurnManager : MonoBehaviourPun
         }
 
         Debug.Log(_actionQueue.Count);
-        if (_actionQueue.Peek() == _enemy1.gameObject)
-        {
-            EnemyTurn();
-        }
-        else
-        {
-            PlayerTurn();
-        }
+        TransitionPhase();
+        //if (_actionQueue.Peek() == _enemy1.gameObject)
+        //{
+        //    EnemyTurn();
+        //}
+        //else
+        //{
+        //    PlayerTurn();
+        //}
     }
 
-    private void TransitionPhase()
+    public void TransitionPhase()
     {
         Debug.Log("Action Queue Count: " + ActionQueue.Count);
         if (ActionQueue.Count.Equals(0))

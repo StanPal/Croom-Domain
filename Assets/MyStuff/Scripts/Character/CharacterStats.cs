@@ -75,13 +75,26 @@ public class CharacterStats : MonoBehaviourPunCallbacks, IPunObservable , IPunIn
         else
         {
             _characterHealth -= damage;
-            this.photonView.RPC("PlayOnHitAnim", RpcTarget.All);
+            if (_class == CharacterClass.Warrior)
+            {
+                this.photonView.RPC("WarriorHit", RpcTarget.All);
+            }
+            else if (_class == CharacterClass.Archer)
+            {
+                this.photonView.RPC("ArcherHit", RpcTarget.All);
+            }
         }
         Debug.Log(_characterName + " HP: " + _characterHealth);
     }
 
     [PunRPC]
-    private void PlayOnHitAnim()
+    private void WarriorHit()
+    {
+        _animator.SetTrigger("OnHitTrigger");
+    }
+
+    [PunRPC]
+    private void ArcherHit()
     {
         _animator.SetTrigger("OnHitTrigger");
     }

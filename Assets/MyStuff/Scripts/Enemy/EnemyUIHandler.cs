@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
 {
     [SerializeField] private Slider _healthbar;
+    public GameObject projectile;
+
     private Enemy _enemy;
     private Animator _animator;
     private bool _canAttack;
@@ -18,7 +20,7 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
     private Vector3 _startPos;
     private Vector3 _Player1Pos;
     private Vector3 _Player2Pos;
-    static private int choice;
+    private int choice = 0;
     public bool CanAttack { set => _canAttack = value; }
 
     private void Awake()
@@ -63,32 +65,53 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
     public void OnAttack()
     {
         _canAttack = true;
-        if (_canAttack)
+        if(choice > 2)
         {
-            choice = Random.Range(0, 3);
+            choice = 0;
+        }
+        if (_enemy.StunTimer > 0)
+        {
+            _enemy.StunTimer = 0;
             _canAttack = false;
-            Debug.Log("Enemy Choice " + choice);  
-            switch (choice)
+        }
+        else
+        {
+            if (_canAttack)
             {
-                case 0:
+                _canAttack = false;
+                Debug.Log("Enemy Choice " + choice);
+                if (choice == 0)
+                {
                     _isSwinging = true;
-                    this.photonView.RPC("Swing", RpcTarget.All);
-                    _battleManager.EnemyAttackPlayer(_enemy.Attack);
-                    break;
-                case 1:
-                    _enemy.onHeal(10.0f);
-                    this.photonView.RPC("Heal", RpcTarget.All);
-                    break;
-                case 2:
-                    this.photonView.RPC("Cast", RpcTarget.All);
-                    _battleManager.TargetAllPlayer(_enemy.Attack);
-                    break;
-                default:
-                    break;
+                    CallSwing();
+                }
+                else if (choice == 1)
+                {
+                    CallHeal();
+                }
+                else if (choice == 2)
+                {
+                    CallCast();
+                }
+                ActionQueueCall();
             }
-            ActionQueueCall();
         }
         //_actionManager.AttackPlayer(this.gameObject, _enemy.ClassType);
+    }
+
+    private void CallHeal()
+    {
+        this.photonView.RPC("Heal", RpcTarget.All);
+    }
+
+    private void CallCast()
+    {
+        this.photonView.RPC("Cast", RpcTarget.All);
+    }
+
+    private void CallSwing()
+    {
+        this.photonView.RPC("Cast", RpcTarget.All);
     }
 
     [PunRPC]
@@ -100,40 +123,52 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
     [PunRPC] 
     private void Swing()
     {
-        _animator.SetTrigger("PunchTrigger");
+        //_animator.SetTrigger("PunchTrigger");
 
-        //StartCoroutine(PlayAnim());
+        StartCoroutine(PlayAnim());
         // StartCoroutine(SmoothLerp(3f, _startPos, _Player1Pos, new Vector3(-1f, 0f, 0f)));
     }
 
     [PunRPC]
     private void Heal()
     {
-        _animator.SetTrigger("HealTrigger");
+       // _animator.SetTrigger("HealTrigger");
 
-        //  StartCoroutine(PlayPrayerAnim());
+          StartCoroutine(PlayPrayerAnim());
     }
 
     [PunRPC]
     private void Cast()
     {
-        _animator.SetTrigger("CastTrigger");
+        StartCoroutine(CastAnim());        
+        //_animator.SetTrigger("CastTrigger");
+    }
+
+    private IEnumerator CastAnim()
+    {
+        _animator.SetBool("IsCasting", true);
+        yield return new WaitForSeconds(7.5f);
+        _animator.SetBool("IsCasting", false);
+        _battleManager.TargetAllPlayer(_enemy.Attack);
     }
 
     private IEnumerator PlayAnim()
-    {        
-        _animator.SetBool("IsPunching", true);
-        yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length);
-        _animator.SetBool("IsPunching", false);
-        _battleManager.EnemyAttackPlayer(_enemy.Attack);
+    {
+            int choice = Random.Range(0, 2);
+            Debug.Log("Enemy chose to hit " + choice);
+            _animator.SetBool("IsPunching", true);
+            yield return new WaitForSeconds(1.1f);
+            _animator.SetBool("IsPunching", false);
+            _battleManager.PunAttackPlayer(_enemy.Attack, choice);   
+  
     }
 
     private IEnumerator PlayPrayerAnim()
     {
         _animator.SetBool("IsPraying", true);
-        yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitForSeconds(1.1f);
+        _enemy.onHeal(5.0f);
         _animator.SetBool("IsPraying", false);
-        _enemy.onHeal(10.0f);
     }
 
     private IEnumerator SmoothLerp(float time, Vector3 starting, Vector3 Target, Vector3 offset)
@@ -154,7 +189,7 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
         {
             _animator.SetBool("IsWalking", false);
             _isSwinging = false;
-            _battleManager.EnemyAttackPlayer(_enemy.Attack);
+           // _battleManager.EnemyAttackPlayer(_enemy.Attack);
             transform.position = _startPos;
         }
     }    
@@ -164,7 +199,8 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
         _canAttack = false;
         Debug.Log("Current Queue Count: " + _TurnManager.ActionQueue.Count);
         _TurnManager.ActionQueue.Dequeue();
-        _TurnManager.State = BattleState.TransitionPhase;
+        _TurnManager.TransitionPhase();
+        choice++;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -172,10 +208,12 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(_canAttack);
+            stream.SendNext(choice);
         }
         else
         {
             this._canAttack = (bool)stream.ReceiveNext();
+            this.choice = (int)stream.ReceiveNext();
         }
     }
 }

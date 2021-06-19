@@ -129,7 +129,7 @@ public class CharacterUIHandler : MonoBehaviourPun, IPunObservable
     {
         yield return new WaitForSeconds(1.5f);
         _TurnManager.ActionQueue.Dequeue();
-        _TurnManager.State = BattleState.TransitionPhase;
+        _TurnManager.TransitionPhase();
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

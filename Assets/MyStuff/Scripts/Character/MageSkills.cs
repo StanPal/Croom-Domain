@@ -34,7 +34,7 @@ public class MageSkills : MonoBehaviourPun
     private void PunNormalAttack()
     {        
         _animator.SetTrigger("CastTrigger");
-        _battleManager.EnemyAttackPlayer(_enemy.Attack);
+       // _battleManager.EnemyAttackPlayer(_enemy.Attack);
         _enemyUIHandler.ActionQueueCall();
     }
 }
