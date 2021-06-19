@@ -56,7 +56,7 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable, IPunInstantiateM
         {
             this.photonView.RPC("PlayStun", RpcTarget.All);
         }
-        else if (_stunTimer == 0)
+        if (_stunTimer == 0)
         {
             this.photonView.RPC("DisableStun", RpcTarget.All);
         }

@@ -1130,15 +1130,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.111111164, b: 1, a: 0.392}
+  m_Color: {r: 0.125979, g: 0.13182785, b: 0.1792453, a: 0.392}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 03435f376320d0e418058b601acc79fd, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1870,7 +1870,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   distance: 7
   height: 3
-  centerOffset: {x: 0, y: 4, z: 0}
+  centerOffset: {x: 1, y: 4, z: 0}
   smoothSpeed: 0.125
 --- !u!114 &7666210376833388699
 MonoBehaviour:
@@ -1887,7 +1887,7 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 1
-  m_UseLocal: 1
+  m_UseLocal: 0
 --- !u!114 &6508705702728221161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3720,6 +3720,14 @@ PrefabInstance:
     - target: {fileID: 1917032147041830191, guid: 8eac7f9cd52220740b3a5f74016862c3, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -21.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4777343121868034644, guid: 8eac7f9cd52220740b3a5f74016862c3, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4777343121868034644, guid: 8eac7f9cd52220740b3a5f74016862c3, type: 3}
+      propertyPath: m_Sprite
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4777343121868034645, guid: 8eac7f9cd52220740b3a5f74016862c3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size

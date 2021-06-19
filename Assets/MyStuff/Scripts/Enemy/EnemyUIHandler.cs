@@ -8,7 +8,7 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
 {
     [SerializeField] private Slider _healthbar;
     public GameObject projectile;
-
+    public GameObject healEffect;
     private Enemy _enemy;
     private Animator _animator;
     private bool _canAttack;
@@ -73,6 +73,7 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
         {
             _enemy.StunTimer = 0;
             _canAttack = false;
+            ActionQueueCall();
         }
         else
         {
@@ -87,6 +88,7 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
                 }
                 else if (choice == 1)
                 {
+                    _enemy.onHeal(5.0f);
                     CallHeal();
                 }
                 else if (choice == 2)
@@ -111,7 +113,7 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
 
     private void CallSwing()
     {
-        this.photonView.RPC("Cast", RpcTarget.All);
+        this.photonView.RPC("Swing", RpcTarget.All);
     }
 
     [PunRPC]
@@ -147,7 +149,11 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
     private IEnumerator CastAnim()
     {
         _animator.SetBool("IsCasting", true);
-        yield return new WaitForSeconds(7.5f);
+        yield return new WaitForSeconds(1.15f);
+        projectile.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        projectile.SetActive(false);
+        yield return new WaitForSeconds(3f);
         _animator.SetBool("IsCasting", false);
         _battleManager.TargetAllPlayer(_enemy.Attack);
     }
@@ -166,8 +172,10 @@ public class EnemyUIHandler : MonoBehaviourPun, IPunObservable
     private IEnumerator PlayPrayerAnim()
     {
         _animator.SetBool("IsPraying", true);
+        healEffect.SetActive(true);
         yield return new WaitForSeconds(1.1f);
-        _enemy.onHeal(5.0f);
+        healEffect.SetActive(false);
+      
         _animator.SetBool("IsPraying", false);
     }
 
